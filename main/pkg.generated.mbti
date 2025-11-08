@@ -1,0 +1,39 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Asterless/MGPIC2025/main"
+
+import(
+  "Milky2018/selene/collision"
+  "Milky2018/selene/math"
+  "Milky2018/selene/sprite"
+)
+
+// Values
+fn add_cat(@math.Vec2D, Int) -> Cat
+
+let cat_collision_layers : Array[@collision.CollisionLayer]
+
+fn cat_collision_mask_layers(Int) -> Array[@collision.CollisionLayer]
+
+fn cat_picture(Int) -> @sprite.Picture
+
+fn cat_size(Int) -> Double
+
+fn get_cat_collision_layer(Int) -> @collision.CollisionLayer
+
+fn get_level_data(Int) -> CatLevelData
+
+fn random_cat_level() -> Int
+
+// Errors
+
+// Types and methods
+type Cat
+
+type CatLevelData
+
+type GameState
+
+// Type aliases
+
+// Traits
+
