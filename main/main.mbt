@@ -32,12 +32,8 @@ let game_state : GameState = {
 ///|
 struct Cat {
   entity : @system.Entity
-  position : @math.Vec2D
   velocity : @velocity.Velocity
-  picture : @sprite.Picture
   level : Int
-  collide : @collision.Collide
-  area : @collision.Area
 }
 
 ///|
@@ -423,7 +419,7 @@ pub fn add_cat(position : @math.Vec2D, level : Int) -> Cat {
   area.on_just_pressed(fn(_button : @system.MouseButton) {
     game_state.cats_clicked.add(self_entity)
   })
-  let cat : Cat = { entity, position, velocity, picture, level, collide, area }
+  let cat : Cat = { entity, velocity, level }
   cats_by_entity.set(entity, cat)
   @position.positions[entity] = position
   @velocity.velocities[entity] = velocity
@@ -517,7 +513,7 @@ fn play_sound_system(backend : &@system.Backend) -> Unit {
   for cat_entity in game_state.cats_clicked {
     let cat_opt = cats_by_entity.get(cat_entity)
     if cat_opt is Some(_) {
-      let cat = cat_opt.unwrap()  
+      let cat = cat_opt.unwrap()
       let sound_path = get_level_data(cat.level).sound
       backend.play_audio(sound_path, volume=1.0, loop_=false)
     }
