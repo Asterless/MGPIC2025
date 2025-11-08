@@ -32,7 +32,6 @@ let game_state : GameState = {
 ///|
 struct Cat {
   entity : @system.Entity
-  velocity : @velocity.Velocity
   level : Int
 }
 
@@ -225,13 +224,13 @@ fn input_system(backend : &@system.Backend) -> Unit {
   // Move Cats
   if @system.is_just_pressed(@system.Code::KeyQ) {
     for pair in cats_by_entity {
-      let (_entity, cat) = pair
-      cat.velocity.x = -4.0 / cat.level.to_double()
+      let (entity, _cat) = pair
+      @velocity.velocities[entity].x = -4.0 / _cat.level.to_double()
     }
   } else if @system.is_just_pressed(@system.Code::KeyE) {
     for pair in cats_by_entity {
-      let (_entity, cat) = pair
-      cat.velocity.x = 4.0 / cat.level.to_double()
+      let (entity, cat) = pair
+      @velocity.velocities[entity].x = 4.0 / cat.level.to_double()
     }
   }
   if @system.is_just_pressed(@system.Code::Space) {
@@ -360,11 +359,11 @@ const FRICTION : Double = 0.1
 ///|
 fn force_system(_backend : &@system.Backend) -> Unit {
   for pair in cats_by_entity {
-    let (_entity, cat) = pair
-    cat.velocity.y += GRAVITY // Gravity
-    cat.velocity.x *= 1.0 - FRICTION // Friction
-    if cat.velocity.x < 0.01 && cat.velocity.x > -0.01 {
-      cat.velocity.x = 0.0
+    let (entity, _cat) = pair
+    @velocity.velocities[entity].y += GRAVITY // Gravity
+    @velocity.velocities[entity].x *= 1.0 - FRICTION // Friction
+    if @velocity.velocities[entity].x < 0.01 && @velocity.velocities[entity].x > -0.01 {
+      @velocity.velocities[entity].x = 0.0
     }
   }
 }
@@ -419,7 +418,7 @@ pub fn add_cat(position : @math.Vec2D, level : Int) -> Cat {
   area.on_just_pressed(fn(_button : @system.MouseButton) {
     game_state.cats_clicked.add(self_entity)
   })
-  let cat : Cat = { entity, velocity, level }
+  let cat : Cat = { entity, level }
   cats_by_entity.set(entity, cat)
   @position.positions[entity] = position
   @velocity.velocities[entity] = velocity
