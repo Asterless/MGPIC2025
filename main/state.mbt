@@ -6,41 +6,41 @@ pub const CANVAS_HEIGHT : Double = 600.0
 
 ///|
 pub struct GameState {
-  pub pointer_entity : @system.Entity
-  pub mut pointer_sprite : @sprite.Sprite
-  pub mut score : Int
-  pub score_bar : @sprite.Text
-  pub mut next_cat_level : Int
-  pub to_merge : @hashset.HashSet[(@system.Entity, @system.Entity)]
-  pub mut background_music_started : Bool
-  pub cats_clicked : @hashset.HashSet[@system.Entity]
+  pointer_entity : Entity
+  mut pointer_sprite : Sprite
+  mut score : Int
+  score_bar : Text
+  mut next_cat_level : Int
+  to_merge : HashSet[(Entity, Entity)]
+  mut background_music_started : Bool
+  cats_clicked : HashSet[Entity]
 }
 
 ///|
 /// Game state initialization
 pub let game_state : GameState = {
-  pointer_entity: @system.Entity::new(),
-  pointer_sprite: @sprite.Sprite::new_picture(cat_picture(1), 10),
+  pointer_entity: Entity::new(),
+  pointer_sprite: Sprite::new_picture(cat_picture(1), 10),
   score: 0,
-  score_bar: @sprite.Text::new("", font="60px ThaleahFat", color="White"),
+  score_bar: Text::new("", font="60px ThaleahFat", color="White"),
   next_cat_level: 1,
-  to_merge: @hashset.HashSet::new(),
+  to_merge: HashSet::new(),
   background_music_started: false,
-  cats_clicked: @hashset.HashSet::new(),
+  cats_clicked: HashSet::new(),
 }
 
 ///|
 pub struct Cat {
-  pub entity : @system.Entity
-  pub level : Int
+  entity : Entity
+  level : Int
 }
 
 ///|
 pub struct CatLevelData {
-  pub size : Double
-  pub path : String
-  pub merge_score : Int
-  pub sound : String
+  size : Double
+  path : String
+  merge_score : Int
+  sound : String
 }
 
 ///|
@@ -102,16 +102,16 @@ pub let cat_level_config : Array[CatLevelData] = [
 ]
 
 ///|
-pub let cats_by_entity : @hashmap.HashMap[@system.Entity, Cat] = @hashmap.HashMap::new()
+pub let cats_by_entity : HashMap[Entity, Cat] = HashMap::new()
 
 ///|
 pub const POINTER_MAX_VELOCITY : Double = 7.5
 
 ///|
-pub let pointer_collision_layer : @collision.CollisionLayer = @collision.CollisionLayer::new()
+pub let pointer_collision_layer : CollisionLayer = CollisionLayer::new()
 
 ///|
-pub let terrain_collision_layer : @collision.CollisionLayer = @collision.CollisionLayer::new()
+pub let terrain_collision_layer : CollisionLayer = CollisionLayer::new()
 
 ///|
 pub const GRAVITY : Double = 0.3
@@ -120,14 +120,14 @@ pub const GRAVITY : Double = 0.3
 pub const FRICTION : Double = 0.1
 
 ///|
-pub let cat_collision_layers : Array[@collision.CollisionLayer] = [
-  @collision.CollisionLayer::new(), // level 1
-  @collision.CollisionLayer::new(), // level 2
-  @collision.CollisionLayer::new(), // level 3
-  @collision.CollisionLayer::new(), // level 4
-  @collision.CollisionLayer::new(), // level 5
-  @collision.CollisionLayer::new(), // level 6
-  @collision.CollisionLayer::new(), // level 7
-  @collision.CollisionLayer::new(), // level 8
-  @collision.CollisionLayer::new(), // level 9
+pub let cat_collision_layers : Array[CollisionLayer] = [
+  CollisionLayer::new(), // level 1
+  CollisionLayer::new(), // level 2
+  CollisionLayer::new(), // level 3
+  CollisionLayer::new(), // level 4
+  CollisionLayer::new(), // level 5
+  CollisionLayer::new(), // level 6
+  CollisionLayer::new(), // level 7
+  CollisionLayer::new(), // level 8
+  CollisionLayer::new(), // level 9
 ]
