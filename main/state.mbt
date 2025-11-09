@@ -6,14 +6,14 @@ pub const CANVAS_HEIGHT : Double = 600.0
 
 ///|
 pub struct GameState {
-  pub pointer_entity : @system.Entity
-  pub mut pointer_sprite : @sprite.Sprite
-  pub mut score : Int
-  pub score_bar : @sprite.Text
-  pub mut next_cat_level : Int
-  pub to_merge : @hashset.HashSet[(@system.Entity, @system.Entity)]
-  pub mut background_music_started : Bool
-  pub cats_clicked : @hashset.HashSet[@system.Entity]
+  pointer_entity : @system.Entity
+  mut pointer_sprite : @sprite.Sprite
+  mut score : Int
+  score_bar : @sprite.Text
+  mut next_cat_level : Int
+  to_merge : @hashset.HashSet[(@system.Entity, @system.Entity)]
+  mut background_music_started : Bool
+  cats_clicked : @hashset.HashSet[@system.Entity]
 }
 
 ///|
@@ -31,16 +31,16 @@ pub let game_state : GameState = {
 
 ///|
 pub struct Cat {
-  pub entity : @system.Entity
-  pub level : Int
+  entity : @system.Entity
+  level : Int
 }
 
 ///|
 pub struct CatLevelData {
-  pub size : Double
-  pub path : String
-  pub merge_score : Int
-  pub sound : String
+  size : Double
+  path : String
+  merge_score : Int
+  sound : String
 }
 
 ///|
