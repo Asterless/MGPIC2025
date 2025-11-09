@@ -5,33 +5,94 @@ import(
   "Milky2018/selene/collision"
   "Milky2018/selene/math"
   "Milky2018/selene/sprite"
+  "Milky2018/selene/system"
+  "moonbitlang/core/hashmap"
+  "moonbitlang/core/hashset"
 )
 
 // Values
+const CANVAS_HEIGHT : Double = 600.0
+
+const CANVAS_WIDTH : Double = 480.0
+
+const FRICTION : Double = 0.1
+
+const GRAVITY : Double = 0.3
+
+const POINTER_MAX_VELOCITY : Double = 7.5
+
+fn add_background() -> Unit
+
+fn add_bottom(@math.Vec2D) -> Unit
+
 fn add_cat(@math.Vec2D, Int) -> Cat
+
+fn add_pointer() -> Unit
+
+fn add_score_bar() -> Unit
+
+fn add_side_walls(@math.Vec2D) -> Unit
 
 let cat_collision_layers : Array[@collision.CollisionLayer]
 
 fn cat_collision_mask_layers(Int) -> Array[@collision.CollisionLayer]
 
+let cat_level_config : Array[CatLevelData]
+
 fn cat_picture(Int) -> @sprite.Picture
 
 fn cat_size(Int) -> Double
+
+let cats_by_entity : @hashmap.HashMap[@system.Entity, Cat]
+
+fn force_system(&@system.Backend) -> Unit
+
+fn game_start(&@system.Backend) -> Unit
+
+let game_state : GameState
 
 fn get_cat_collision_layer(Int) -> @collision.CollisionLayer
 
 fn get_level_data(Int) -> CatLevelData
 
+fn input_system(&@system.Backend) -> Unit
+
+fn merge_system(&@system.Backend) -> Unit
+
+let pointer_collision_layer : @collision.CollisionLayer
+
 fn random_cat_level() -> Int
+
+fn set_score(Int) -> Unit
+
+let terrain_collision_layer : @collision.CollisionLayer
 
 // Errors
 
 // Types and methods
-type Cat
+pub struct Cat {
+  entity : @system.Entity
+  level : Int
+}
+fn Cat::merge(Self, Self) -> Unit
 
-type CatLevelData
+pub struct CatLevelData {
+  size : Double
+  path : String
+  merge_score : Int
+  sound : String
+}
 
-type GameState
+pub struct GameState {
+  pointer_entity : @system.Entity
+  mut pointer_sprite : @sprite.Sprite
+  mut score : Int
+  score_bar : @sprite.Text
+  mut next_cat_level : Int
+  to_merge : @hashset.HashSet[(@system.Entity, @system.Entity)]
+  mut background_music_started : Bool
+  cats_clicked : @hashset.HashSet[@system.Entity]
+}
 
 // Type aliases
 
