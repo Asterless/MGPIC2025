@@ -4,8 +4,10 @@ package "Asterless/MGPIC2025/main"
 import(
   "Milky2018/selene/collision"
   "Milky2018/selene/math"
+  "Milky2018/selene/position"
   "Milky2018/selene/sprite"
   "Milky2018/selene/system"
+  "Milky2018/selene/velocity"
   "moonbitlang/core/hashmap"
   "moonbitlang/core/hashset"
 )
@@ -33,11 +35,17 @@ fn add_score_bar() -> Unit
 
 fn add_side_walls(@math.Vec2D) -> Unit
 
+fn bind_key(@system.Code, Trigger, () -> Unit) -> Unit
+
+fn bind_keys(Array[@system.Code], Trigger, () -> Unit) -> Unit
+
 let cat_collision_layers : Array[@collision.CollisionLayer]
 
 fn cat_collision_mask_layers(Int) -> Array[@collision.CollisionLayer]
 
 let cat_level_config : Array[CatLevelData]
+
+fn cat_move(MoveState) -> Unit
 
 fn cat_picture(Int) -> @sprite.Picture
 
@@ -55,11 +63,21 @@ fn get_cat_collision_layer(Int) -> @collision.CollisionLayer
 
 fn get_level_data(Int) -> CatLevelData
 
+let global_c : Map[@system.Entity, @collision.Collide]
+
+let global_p : Map[@system.Entity, @position.Position]
+
+let global_s : Map[@system.Entity, @sprite.Sprite]
+
+let global_v : Map[@system.Entity, @velocity.Velocity]
+
 fn input_system(&@system.Backend) -> Unit
 
 fn merge_system(&@system.Backend) -> Unit
 
 let pointer_collision_layer : @collision.CollisionLayer
+
+fn ptr_move(MoveState) -> Unit
 
 fn random_cat_level() -> Int
 
@@ -94,7 +112,20 @@ pub struct GameState {
   cats_clicked : @hashset.HashSet[@system.Entity]
 }
 
+pub enum MoveState {
+  Left
+  Right
+  Stop
+}
+
+pub enum Trigger {
+  Pressed
+  KeepPressed
+  NotPressed
+}
+
 // Type aliases
 
 // Traits
+trait SigNum
 

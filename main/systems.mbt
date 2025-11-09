@@ -4,31 +4,12 @@ pub fn input_system(backend : &@system.Backend) -> Unit {
     .get(game_state.pointer_entity)
     .unwrap()
   // Move pointer
-  if @system.is_pressed(@system.Code::KeyA) {
-    // Move left
-    if new_velocity.x > -POINTER_MAX_VELOCITY {
-      new_velocity.x -= 2.5
-    }
-  } else if @system.is_pressed(@system.Code::KeyD) {
-    // Move right
-    if new_velocity.x < POINTER_MAX_VELOCITY {
-      new_velocity.x += 2.5
-    }
-  } else {
-    new_velocity.x = 0.0
-  }
+  bind_key(KeyA, KeepPressed, () => ptr_move(Left))
+  bind_key(KeyD, KeepPressed, () => ptr_move(Right))
+  bind_keys([KeyA, KeyD], NotPressed, () => ptr_move(Stop))
   // Move Cats
-  if @system.is_just_pressed(@system.Code::KeyQ) {
-    for pair in cats_by_entity {
-      let (entity, _cat) = pair
-      @velocity.velocities[entity].x = -4.0 / _cat.level.to_double()
-    }
-  } else if @system.is_just_pressed(@system.Code::KeyE) {
-    for pair in cats_by_entity {
-      let (entity, cat) = pair
-      @velocity.velocities[entity].x = 4.0 / cat.level.to_double()
-    }
-  }
+  bind_key(KeyQ, Pressed, () => cat_move(Left))
+  bind_key(KeyE, Pressed, () => cat_move(Right))
   if @system.is_just_pressed(@system.Code::Space) {
     // Start background music on first interaction
     if !game_state.background_music_started {
@@ -50,13 +31,13 @@ pub fn input_system(backend : &@system.Backend) -> Unit {
     backend.play_audio("./assets/sounds/jump.wav", volume=1.0, loop_=false)
   }
   @velocity.velocities[game_state.pointer_entity] = new_velocity
-  let collide : @collision.Collide = @collision.Collide::{
-    shape: @collision.CollisionShape::Rect(
+  let collide : Collide = Collide::{
+    shape: CollisionShape::Rect(
       size=@math.Vec2D::new(32.0, 32.0),
       offset=@math.Vec2D::new(0.0, 0.0),
     ),
     layer: pointer_collision_layer,
-    mask: @collision.CollisionMask::new([terrain_collision_layer]),
+    mask: CollisionMask::new([terrain_collision_layer]),
   }
   @sprite.sprites[game_state.pointer_entity] = game_state.pointer_sprite
   @collision.collides[game_state.pointer_entity] = collide
