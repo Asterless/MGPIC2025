@@ -1,8 +1,5 @@
 ///|
-pub fn input_system(backend : &@system.Backend) -> Unit {
-  let new_velocity = @velocity.velocities
-    .get(game_state.pointer_entity)
-    .unwrap()
+pub fn input_system(backend : &Backend) -> Unit {
   // Move pointer
   bind_key(KeyA, KeepPressed, () => ptr_move(Left))
   bind_key(KeyD, KeepPressed, () => ptr_move(Right))
@@ -10,27 +7,29 @@ pub fn input_system(backend : &@system.Backend) -> Unit {
   // Move Cats
   bind_key(KeyQ, Pressed, () => cat_move(Left))
   bind_key(KeyE, Pressed, () => cat_move(Right))
-  if @system.is_just_pressed(@system.Code::Space) {
-    // Start background music on first interaction
-    if !game_state.background_music_started {
-      backend.play_audio(
-        "./assets/Sounds/background_music.wav",
-        volume=0.2,
-        loop_=true,
-      )
-      game_state.background_music_started = true
-    }
-    // Release cat
-    let position = @position.positions[game_state.pointer_entity].0
-    let _ = add_cat(position, game_state.next_cat_level)
-    game_state.next_cat_level = random_cat_level()
-    game_state.pointer_sprite = @sprite.Sprite::new_picture(
-      cat_picture(game_state.next_cat_level),
-      10,
-    )
-    backend.play_audio("./assets/sounds/jump.wav", volume=1.0, loop_=false)
-  }
-  @velocity.velocities[game_state.pointer_entity] = new_velocity
+  // Play Music and Drop Cats
+  bind_key(Space, Pressed, () => cat_drop(backend))
+  bind_key(Space, Pressed, () => music_play(backend))
+  // if is_just_pressed(Code::Space) {
+  //   // Start background music on first interaction
+  //   if !game_state.background_music_started {
+  //     backend.play_audio(
+  //       "./assets/Sounds/background_music.wav",
+  //       volume=0.2,
+  //       loop_=true,
+  //     )
+  //     game_state.background_music_started = true
+  //   }
+  //   // Release cat
+  //   let position = global_p[ptr_entity].0
+  //   let _ = add_cat(position, game_state.next_cat_level)
+  //   game_state.next_cat_level = random_cat_level()
+  //   game_state.pointer_sprite = Sprite::new_picture(
+  //     cat_picture(game_state.next_cat_level),
+  //     10,
+  //   )
+  //   backend.play_audio("./assets/sounds/jump.wav", volume=1.0, loop_=false)
+  // }
   let collide : Collide = Collide::{
     shape: CollisionShape::Rect(
       size=@math.Vec2D::new(32.0, 32.0),
@@ -39,12 +38,12 @@ pub fn input_system(backend : &@system.Backend) -> Unit {
     layer: pointer_collision_layer,
     mask: CollisionMask::new([terrain_collision_layer]),
   }
-  @sprite.sprites[game_state.pointer_entity] = game_state.pointer_sprite
-  @collision.collides[game_state.pointer_entity] = collide
+  @sprite.sprites[ptr_entity] = game_state.pointer_sprite
+  @collision.collides[ptr_entity] = collide
 }
 
 ///|
-pub fn merge_system(backend : &@system.Backend) -> Unit {
+pub fn merge_system(backend : &Backend) -> Unit {
   let merged_this_frame = @hashset.HashSet::new() // Guard against multiple merges in one frame
   for pair in game_state.to_merge {
     let (cat1_entity, cat2_entity) = pair
@@ -72,20 +71,19 @@ pub fn merge_system(backend : &@system.Backend) -> Unit {
 }
 
 ///|
-pub fn force_system(_backend : &@system.Backend) -> Unit {
+pub fn force_system(_backend : &Backend) -> Unit {
   for pair in cats_by_entity {
     let (entity, _cat) = pair
-    @velocity.velocities[entity].y += GRAVITY // Gravity
-    @velocity.velocities[entity].x *= 1.0 - FRICTION // Friction
-    if @velocity.velocities[entity].x < 0.01 &&
-      @velocity.velocities[entity].x > -0.01 {
-      @velocity.velocities[entity].x = 0.0
+    global_v[entity].y += GRAVITY // Gravity
+    global_v[entity].x *= 1.0 - FRICTION // Friction
+    if global_v[entity].x < 0.01 && global_v[entity].x > -0.01 {
+      global_v[entity].x = 0.0
     }
   }
 }
 
 ///|
-fn play_sound_system(backend : &@system.Backend) -> Unit {
+fn play_sound_system(backend : &Backend) -> Unit {
   for cat_entity in game_state.cats_clicked {
     let cat_opt = cats_by_entity.get(cat_entity)
     if cat_opt is Some(_) {

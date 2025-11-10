@@ -1,10 +1,4 @@
 ///|
-pub const CANVAS_WIDTH : Double = 480.0
-
-///|
-pub const CANVAS_HEIGHT : Double = 600.0
-
-///|
 pub struct GameState {
   pointer_entity : Entity
   mut pointer_sprite : Sprite
@@ -105,19 +99,10 @@ pub let cat_level_config : Array[CatLevelData] = [
 pub let cats_by_entity : HashMap[Entity, Cat] = HashMap::new()
 
 ///|
-pub const POINTER_MAX_VELOCITY : Double = 7.5
-
-///|
 pub let pointer_collision_layer : CollisionLayer = CollisionLayer::new()
 
 ///|
 pub let terrain_collision_layer : CollisionLayer = CollisionLayer::new()
-
-///|
-pub const GRAVITY : Double = 0.3
-
-///|
-pub const FRICTION : Double = 0.1
 
 ///|
 pub let cat_collision_layers : Array[CollisionLayer] = [

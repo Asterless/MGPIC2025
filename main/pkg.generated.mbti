@@ -21,8 +21,6 @@ const FRICTION : Double = 0.1
 
 const GRAVITY : Double = 0.3
 
-const POINTER_MAX_VELOCITY : Double = 7.5
-
 fn add_background() -> Unit
 
 fn add_bottom(@math.Vec2D) -> Unit
@@ -42,6 +40,8 @@ fn bind_keys(Array[@system.Code], Trigger, () -> Unit) -> Unit
 let cat_collision_layers : Array[@collision.CollisionLayer]
 
 fn cat_collision_mask_layers(Int) -> Array[@collision.CollisionLayer]
+
+fn cat_drop(&@system.Backend) -> Unit
 
 let cat_level_config : Array[CatLevelData]
 
@@ -63,6 +63,8 @@ fn get_cat_collision_layer(Int) -> @collision.CollisionLayer
 
 fn get_level_data(Int) -> CatLevelData
 
+let global_a : Map[@system.Entity, @collision.Area]
+
 let global_c : Map[@system.Entity, @collision.Collide]
 
 let global_p : Map[@system.Entity, @position.Position]
@@ -75,7 +77,11 @@ fn input_system(&@system.Backend) -> Unit
 
 fn merge_system(&@system.Backend) -> Unit
 
+fn music_play(&@system.Backend) -> Unit
+
 let pointer_collision_layer : @collision.CollisionLayer
+
+let ptr_entity : @system.Entity
 
 fn ptr_move(MoveState) -> Unit
 

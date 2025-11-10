@@ -6,10 +6,24 @@ pub fn set_score(score : Int) -> Unit {
 
 ///|
 pub fn Cat::merge(self : Cat, other : Cat) -> Unit {
-  set_score(game_state.score + cat_level_config[self.level].merge_score)
-  let position = @position.positions[self.entity].0
-  let pos_add = Vec2D::new(0.0, -(cat_level_config[self.level].size / 2.0))
-  let _ = add_cat(position + pos_add, self.level + 1)
+  let l = self.level
+  set_score(game_state.score + get_level_data(l).merge_score)
+  let p_cat_1 = global_p[self.entity].0
+  let p_cat_2 = global_p[other.entity].0
+  let cat_x = {
+    let p_mid = (p_cat_1.x + p_cat_2.x) / 2.0
+    let size = cat_size(l + 1)
+    if CANVAS_WIDTH - p_mid - 16.0 < size {
+      CANVAS_WIDTH - 17.0 - size
+    } else if p_mid - 16.0 < 0 {
+      17.0 + size
+    } else {
+      p_mid
+    }
+  }
+  let p_mid = Vec2D::{ x: cat_x, y: 0 }
+  let merged = add_cat(p_mid, l + 1)
+  global_v[merged.entity].y = 1000
   cats_by_entity.remove(self.entity)
   cats_by_entity.remove(other.entity)
   Entity::destroy(self.entity)
@@ -68,9 +82,7 @@ pub fn get_cat_collision_layer(level : Int) -> CollisionLayer {
 }
 
 ///|
-pub fn cat_collision_mask_layers(
-  level : Int,
-) -> Array[@collision.CollisionLayer] {
+pub fn cat_collision_mask_layers(level : Int) -> Array[CollisionLayer] {
   let layers = Array::new()
   layers.push(terrain_collision_layer)
   for i = 0; i < cat_collision_layers.length(); i = i + 1 {
