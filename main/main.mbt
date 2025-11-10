@@ -5,7 +5,7 @@ fn main {
   .with_canvas_height(CANVAS_HEIGHT)
   .with_fps(60)
   .add_plugin(@plugins.default_plugin)
-  // .add_plugin(@plugins.debug_plugin)
+  //.add_plugin(@plugins.debug_plugin)
   .add_system(input_system)
   .add_system(force_system)
   .add_system(merge_system)
