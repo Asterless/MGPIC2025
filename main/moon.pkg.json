@@ -17,7 +17,7 @@
 		},
 		{
 			"path": "Milky2018/selene/math",
-			"alias": "cmath"
+			"alias": "selenemath"
 		}
 	]
 }

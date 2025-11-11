@@ -5,7 +5,7 @@ using @hashset {type HashSet}
 using @hashmap {type HashMap}
 
 ///|
-using @cmath {type Vec2D}
+using @selenemath {type Vec2D}
 
 ///|
 using @system {type Code, type Entity, type MouseButton, trait Backend}
