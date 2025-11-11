@@ -11,8 +11,8 @@ trait SigNum {
 }
 
 ///|
-impl SigNum for MoveState with signum(s) {
-  match s {
+impl SigNum for MoveState with signum(state) {
+  match state {
     Left => -1.0
     Right => 1.0
     Stop => 0.0

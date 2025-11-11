@@ -23,8 +23,6 @@ fn add_background() -> Unit
 
 fn add_bottom(@math.Vec2D) -> Unit
 
-fn add_cat(@math.Vec2D, Int) -> Cat
-
 fn add_pointer() -> Unit
 
 fn add_score_bar() -> Unit
@@ -74,16 +72,17 @@ pub struct Cat {
   entity : @system.Entity
   level : Int
 }
-fn Cat::collision_layer(Self) -> @collision.CollisionLayer
-fn Cat::collision_mask_layers(Self) -> Array[@collision.CollisionLayer]
+fn Cat::get_collision_layer(Self) -> @collision.CollisionLayer
+fn Cat::get_collision_mask_layers(Self) -> Array[@collision.CollisionLayer]
+fn Cat::get_merge_score(Self) -> Int
+fn Cat::get_picture(Self) -> @sprite.Picture
+fn Cat::get_picture_by_level(Int) -> @sprite.Picture
+fn Cat::get_size(Self) -> Double
+fn Cat::get_size_by_level(Int) -> Double
+fn Cat::get_sound_path(Self) -> String
+fn Cat::get_sound_path_by_level(Int) -> String
 fn Cat::merge(Self, Self) -> Unit
-fn Cat::merge_score(Self) -> Int
-fn Cat::picture(Self) -> @sprite.Picture
-fn Cat::picture_by_level(Int) -> @sprite.Picture
-fn Cat::size(Self) -> Double
-fn Cat::size_by_level(Int) -> Double
-fn Cat::sound(Self) -> String
-fn Cat::sound_by_level(Int) -> String
+fn Cat::new(@math.Vec2D, Int) -> Self
 
 pub struct GameState {
   pointer_entity : @system.Entity
