@@ -11,6 +11,14 @@ pub const GRAVITY : Double = 0.3
 pub const FRICTION : Double = 0.1
 
 ///|
+/// Background Music Volume
+const BACKGROUND_MUSIC_VOLUME : Double = 0.2
+
+///|
+/// The force applied to cats when moving
+const CAT_MOVE_FORCE : Double = 4.0
+
+///|
 /// Pointer Horizontal Acceleration
 const PTR_ACC_H : Double = 2.5
 

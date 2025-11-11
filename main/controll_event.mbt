@@ -18,7 +18,9 @@ pub fn bind_keys(
     Pressed => x => is_just_pressed(x)
     NotPressed => x => !is_pressed(x)
   }
-  let state = keys.map(x => f(x)).fold((i, x) => i && x, init=true)
+  let state = keys
+    .map(x => f(x))
+    .fold((acc, current) => acc && current, init=true)
   if state {
     handler()
   }
@@ -60,7 +62,7 @@ pub fn ptr_move(move_state : MoveState) -> Unit {
 ///|
 pub fn cat_move(move_state : MoveState) -> Unit {
   cats_by_entity.each((e, c) => global_v[e].x = move_state.signum() *
-    4.0 /
+    CAT_MOVE_FORCE /
     c.level.to_double())
 }
 
@@ -69,7 +71,7 @@ pub fn music_play(backend : &Backend) -> Unit {
   if !game_state.background_music_started {
     backend.play_audio(
       "./assets/Sounds/background_music.wav",
-      volume=0.2,
+      volume=BACKGROUND_MUSIC_VOLUME,
       loop_=true,
     )
     game_state.background_music_started = true
@@ -85,5 +87,5 @@ pub fn cat_drop(backend : &Backend) -> Unit {
     cat_picture(game_state.next_cat_level),
     10,
   )
-  backend.play_audio("./assets/sounds/jump.wav", volume=1.0, loop_=false)
+  backend.play_audio("./assets/sounds/drop.wav", volume=1.0, loop_=false)
 }
