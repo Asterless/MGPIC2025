@@ -1,11 +1,11 @@
 ///|
-pub fn set_score(score : Int) -> Unit {
+fn set_score(score : Int) -> Unit {
   game_state.score = score
   game_state.score_bar.content = "Score: " + game_state.score.to_string()
 }
 
 ///|
-pub fn random_cat_level() -> Int {
+fn random_cat_level() -> Int {
   // Use the global random generator instead of creating a new one.
   let roll = game_state.score % 10
   let value = if roll < 0 { roll + 10 } else { roll }

@@ -1,14 +1,14 @@
 ///|
-pub const CANVAS_WIDTH : Double = 480.0
+const CANVAS_WIDTH : Double = 480.0
 
 ///|
-pub const CANVAS_HEIGHT : Double = 600.0
+const CANVAS_HEIGHT : Double = 600.0
 
 ///|
-pub const GRAVITY : Double = 0.3
+const GRAVITY : Double = 0.3
 
 ///|
-pub const FRICTION : Double = 0.1
+const FRICTION : Double = 0.1
 
 ///|
 /// Background Music Volume
