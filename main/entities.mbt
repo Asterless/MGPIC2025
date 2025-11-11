@@ -40,19 +40,19 @@ pub fn add_cat(position : Vec2D, level : Int) -> Cat {
     game_state.cats_clicked.add(self_entity)
   })
   cats_by_entity.set(entity, cat)
-  g_position[entity] = position
-  g_velocity[entity] = velocity
-  g_collides[entity] = collide
-  g_areas[entity] = area
-  g_sprites[entity] = Sprite::new_picture(cat.picture(), 10) //Zindex 10 to be above the pointer
+  global_position[entity] = position
+  global_velocity[entity] = velocity
+  global_collides[entity] = collide
+  global_areas[entity] = area
+  global_sprites[entity] = Sprite::new_picture(cat.picture(), 10) //Zindex 10 to be above the pointer
   cat
 }
 
 ///|
 pub fn Cat::merge(self : Cat, other : Cat) -> Unit {
   set_score(game_state.score + self.merge_score())
-  let p_cat_1 = g_position[self.entity].0
-  let p_cat_2 = g_position[other.entity].0
+  let p_cat_1 = global_position[self.entity].0
+  let p_cat_2 = global_position[other.entity].0
   let cat_x = {
     let p_mid = (p_cat_1.x + p_cat_2.x) / 2.0
     let size = self.size() + 16.0
@@ -66,7 +66,7 @@ pub fn Cat::merge(self : Cat, other : Cat) -> Unit {
   }
   let p_mid = Vec2D::{ x: cat_x, y: 0 }
   let merged = add_cat(p_mid, self.level + 1)
-  g_velocity[merged.entity].y = 1000
+  global_velocity[merged.entity].y = 1000
   cats_by_entity.remove(self.entity)
   cats_by_entity.remove(other.entity)
   Entity::destroy(self.entity)

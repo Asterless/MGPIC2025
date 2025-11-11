@@ -14,10 +14,10 @@ using @system {type Code, type Entity, type MouseButton, trait Backend}
 using @system {is_pressed, is_just_pressed}
 
 ///|
-using @velocity {type Velocity, velocities as g_velocity}
+using @velocity {type Velocity, velocities as global_velocity}
 
 ///|
-using @position {type Position, positions as g_position}
+using @position {type Position, positions as global_position}
 
 ///|
 using @sprite {
@@ -25,7 +25,7 @@ using @sprite {
   type Text,
   type Picture,
   type Animation,
-  sprites as g_sprites,
+  sprites as global_sprites,
 }
 
 ///|
@@ -35,8 +35,8 @@ using @collision {
   type CollisionMask,
   type CollisionShape,
   type Area,
-  collides as g_collides,
-  areas as g_areas,
+  collides as global_collides,
+  areas as global_areas,
 }
 
 ///|

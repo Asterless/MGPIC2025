@@ -9,7 +9,7 @@ pub fn input_system(backend : &Backend) -> Unit {
   bind_key(KeyE, Pressed, () => cat_move(Right))
   // Play Music and Drop Cats
   bind_key(Space, Pressed, () => cat_drop(backend))
-  g_sprites[ptr_entity] = game_state.pointer_sprite
+  global_sprites[ptr_entity] = game_state.pointer_sprite
   let collide : Collide = Collide::{
     shape: CollisionShape::Rect(
       size=Vec2D::new(32.0, 32.0),
@@ -18,7 +18,7 @@ pub fn input_system(backend : &Backend) -> Unit {
     layer: pointer_collision_layer,
     mask: CollisionMask::new([terrain_collision_layer]),
   }
-  g_collides[ptr_entity] = collide
+  global_collides[ptr_entity] = collide
   bind_key(Space, Pressed, () => music_play(backend))
 }
 
@@ -57,10 +57,10 @@ pub fn merge_system(backend : &Backend) -> Unit {
 pub fn force_system(_backend : &Backend) -> Unit {
   for pair in cats_by_entity {
     let (entity, _cat) = pair
-    g_velocity[entity].y += GRAVITY // Gravity
-    g_velocity[entity].x *= 1.0 - FRICTION // Friction
-    if g_velocity[entity].x < 0.01 && g_velocity[entity].x > -0.01 {
-      g_velocity[entity].x = 0.0
+    global_velocity[entity].y += GRAVITY // Gravity
+    global_velocity[entity].x *= 1.0 - FRICTION // Friction
+    if global_velocity[entity].x < 0.01 && global_velocity[entity].x > -0.01 {
+      global_velocity[entity].x = 0.0
     }
   }
 }
