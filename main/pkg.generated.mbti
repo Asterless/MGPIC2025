@@ -4,10 +4,8 @@ package "Asterless/MGPIC2025/main"
 import(
   "Milky2018/selene/collision"
   "Milky2018/selene/math"
-  "Milky2018/selene/position"
   "Milky2018/selene/sprite"
   "Milky2018/selene/system"
-  "Milky2018/selene/velocity"
   "moonbitlang/core/hashmap"
   "moonbitlang/core/hashset"
 )
@@ -39,17 +37,9 @@ fn bind_keys(Array[@system.Code], Trigger, () -> Unit) -> Unit
 
 let cat_collision_layers : Array[@collision.CollisionLayer]
 
-fn cat_collision_mask_layers(Int) -> Array[@collision.CollisionLayer]
-
 fn cat_drop(&@system.Backend) -> Unit
 
-let cat_level_config : Array[CatLevelData]
-
 fn cat_move(MoveState) -> Unit
-
-fn cat_picture(Int) -> @sprite.Picture
-
-fn cat_size(Int) -> Double
 
 let cats_by_entity : @hashmap.HashMap[@system.Entity, Cat]
 
@@ -58,20 +48,6 @@ fn force_system(&@system.Backend) -> Unit
 fn game_start(&@system.Backend) -> Unit
 
 let game_state : GameState
-
-fn get_cat_collision_layer(Int) -> @collision.CollisionLayer
-
-fn get_level_data(Int) -> CatLevelData
-
-let global_a : Map[@system.Entity, @collision.Area]
-
-let global_c : Map[@system.Entity, @collision.Collide]
-
-let global_p : Map[@system.Entity, @position.Position]
-
-let global_s : Map[@system.Entity, @sprite.Sprite]
-
-let global_v : Map[@system.Entity, @velocity.Velocity]
 
 fn input_system(&@system.Backend) -> Unit
 
@@ -98,14 +74,16 @@ pub struct Cat {
   entity : @system.Entity
   level : Int
 }
+fn Cat::collision_layer(Self) -> @collision.CollisionLayer
+fn Cat::collision_mask_layers(Self) -> Array[@collision.CollisionLayer]
 fn Cat::merge(Self, Self) -> Unit
-
-pub struct CatLevelData {
-  size : Double
-  path : String
-  merge_score : Int
-  sound : String
-}
+fn Cat::merge_score(Self) -> Int
+fn Cat::picture(Self) -> @sprite.Picture
+fn Cat::picture_by_level(Int) -> @sprite.Picture
+fn Cat::size(Self) -> Double
+fn Cat::size_by_level(Int) -> Double
+fn Cat::sound(Self) -> String
+fn Cat::sound_by_level(Int) -> String
 
 pub struct GameState {
   pointer_entity : @system.Entity

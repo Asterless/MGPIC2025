@@ -14,16 +14,16 @@ pub fn game_start(_backend : &Backend) -> Unit {
 
 ///|
 pub fn add_pointer() -> Unit {
-  global_p[ptr_entity] = Vec2D::new(CANVAS_WIDTH / 2.0, 80.0)
+  global_position[ptr_entity] = Vec2D::new(CANVAS_WIDTH / 2.0, 80.0)
   let velocity = Vec2D::new(0.0, 0.0)
-  global_v[ptr_entity] = velocity
-  global_s[ptr_entity] = game_state.pointer_sprite
+  global_velocity[ptr_entity] = velocity
+  global_sprites[ptr_entity] = game_state.pointer_sprite
 }
 
 ///|
 pub fn add_bottom(pos : Vec2D) -> Unit {
   let entity = Entity::new()
-  global_p[entity] = pos
+  global_position[entity] = pos
   let animation = Animation::new(
     "./assets/Terrain/Terrain (16x16).png",
     max_frame=1,
@@ -32,7 +32,7 @@ pub fn add_bottom(pos : Vec2D) -> Unit {
     offset=Vec2D::new(16.0 * 7, 0.0),
   )
   let sprite = Sprite::new_animation(animation, 20)
-  global_s[entity] = sprite
+  global_sprites[entity] = sprite
   let collide : Collide = Collide::{
     shape: CollisionShape::Rect(
       size=Vec2D::new(16.0, 16.0),
@@ -41,7 +41,7 @@ pub fn add_bottom(pos : Vec2D) -> Unit {
     layer: terrain_collision_layer,
     mask: CollisionMask::empty(),
   }
-  global_c[entity] = collide
+  global_collides[entity] = collide
 }
 
 ///|
@@ -55,7 +55,7 @@ pub fn add_side_walls(pos : Vec2D) -> Unit {
   )
   // Left Wall
   let wall = Entity::new()
-  global_p[wall] = pos
+  global_position[wall] = pos
   let left_collide : Collide = Collide::{
     shape: CollisionShape::Rect(
       size=Vec2D::new(16.0, 16.0),
@@ -64,8 +64,8 @@ pub fn add_side_walls(pos : Vec2D) -> Unit {
     layer: terrain_collision_layer,
     mask: CollisionMask::new([pointer_collision_layer]),
   }
-  global_s[wall] = Sprite::new_animation(animation, 5)
-  global_c[wall] = left_collide
+  global_sprites[wall] = Sprite::new_animation(animation, 5)
+  global_collides[wall] = left_collide
 }
 
 ///|
@@ -77,24 +77,27 @@ pub fn add_background() -> Unit {
     repeat=true,
   )
   let sprite = Sprite::new_picture(picture, 0)
-  global_s[entity] = sprite
-  global_p[entity] = Vec2D::zero()
+  global_sprites[entity] = sprite
+  global_position[entity] = Vec2D::zero()
 }
 
 ///|
 pub fn add_score_bar() -> Unit {
   set_score(0)
   let entity = Entity::new()
-  global_p[entity] = Vec2D::new(CANVAS_WIDTH / 2 - 200.0, CANVAS_HEIGHT * 0.10)
+  global_position[entity] = Vec2D::new(
+    CANVAS_WIDTH / 2 - 200.0,
+    CANVAS_HEIGHT * 0.10,
+  )
   let sprite = Sprite::new_text(game_state.score_bar, 5)
-  global_s[entity] = sprite
+  global_sprites[entity] = sprite
   let entity_2 = Entity::new()
-  global_p[entity_2] = Vec2D::new(
+  global_position[entity_2] = Vec2D::new(
     CANVAS_WIDTH / 2 - 120.0,
     CANVAS_HEIGHT * 0.30,
   )
   let entity_3 = Entity::new()
-  global_p[entity_3] = Vec2D::new(
+  global_position[entity_3] = Vec2D::new(
     CANVAS_WIDTH / 2 - 120.0,
     CANVAS_HEIGHT * 0.40,
   )
@@ -109,7 +112,7 @@ pub fn add_score_bar() -> Unit {
     color="Gray",
   )
   let optional_sprite_2 = Sprite::new_text(text, 5)
-  global_s[entity_2] = optional_sprite_2
+  global_sprites[entity_2] = optional_sprite_2
   let optional_sprite_3 = Sprite::new_text(text2, 5)
-  global_s[entity_3] = optional_sprite_3
+  global_sprites[entity_3] = optional_sprite_3
 }
