@@ -75,7 +75,7 @@ fn Cat::merge(self : Cat, other : Cat) -> Unit {
 
 ///|
 fn Cat::size(self : Cat) -> Double {
-  (self.level - 1).to_double() * 16.0 + 32.0
+  Cat::size_by_level(self.level)
 }
 
 ///|
@@ -90,9 +90,7 @@ fn Cat::merge_score(self : Cat) -> Int {
 
 ///|
 fn Cat::picture(self : Cat) -> Picture {
-  let size = self.size()
-  let size_vec = Vec2D::new(size, size)
-  Picture::new(size_vec, "assets/Memes/cat_lv\{self.level}_\{size}x\{size}.png")
+  Cat::picture_by_level(self.level)
 }
 
 ///|
@@ -104,7 +102,7 @@ fn Cat::picture_by_level(level : Int) -> Picture {
 
 ///|
 fn Cat::sound(self : Cat) -> String {
-  "assets/Sounds/merge_lv\{self.level}.wav"
+  Cat::sound_by_level(self.level)
 }
 
 ///|
