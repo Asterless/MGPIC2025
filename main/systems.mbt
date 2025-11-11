@@ -9,37 +9,17 @@ pub fn input_system(backend : &Backend) -> Unit {
   bind_key(KeyE, Pressed, () => cat_move(Right))
   // Play Music and Drop Cats
   bind_key(Space, Pressed, () => cat_drop(backend))
-  bind_key(Space, Pressed, () => music_play(backend))
-  // if is_just_pressed(Code::Space) {
-  //   // Start background music on first interaction
-  //   if !game_state.background_music_started {
-  //     backend.play_audio(
-  //       "./assets/Sounds/background_music.wav",
-  //       volume=0.2,
-  //       loop_=true,
-  //     )
-  //     game_state.background_music_started = true
-  //   }
-  //   // Release cat
-  //   let position = global_p[ptr_entity].0
-  //   let _ = add_cat(position, game_state.next_cat_level)
-  //   game_state.next_cat_level = random_cat_level()
-  //   game_state.pointer_sprite = Sprite::new_picture(
-  //     cat_picture(game_state.next_cat_level),
-  //     10,
-  //   )
-  //   backend.play_audio("./assets/sounds/jump.wav", volume=1.0, loop_=false)
-  // }
+  global_sprites[ptr_entity] = game_state.pointer_sprite
   let collide : Collide = Collide::{
     shape: CollisionShape::Rect(
-      size=@math.Vec2D::new(32.0, 32.0),
-      offset=@math.Vec2D::new(0.0, 0.0),
+      size=Vec2D::new(32.0, 32.0),
+      offset=Vec2D::new(0.0, 0.0),
     ),
     layer: pointer_collision_layer,
     mask: CollisionMask::new([terrain_collision_layer]),
   }
-  @sprite.sprites[ptr_entity] = game_state.pointer_sprite
-  @collision.collides[ptr_entity] = collide
+  global_collides[ptr_entity] = collide
+  bind_key(Space, Pressed, () => music_play(backend))
 }
 
 ///|
@@ -59,11 +39,14 @@ pub fn merge_system(backend : &Backend) -> Unit {
       // Mark as merged
       merged_this_frame.add(cat1_entity)
       merged_this_frame.add(cat2_entity)
-      // Get sound from config
-      let sound_path = get_level_data(cat1.level + 1).sound
+
       // Perform merge
       cat1.merge(cat2)
-      backend.play_audio(sound_path, volume=0.8, loop_=false)
+      backend.play_audio(
+        Cat::sound_by_level(cat1.level + 1),
+        volume=0.8,
+        loop_=false,
+      )
     }
   }
   // Clear the merge list
@@ -74,10 +57,10 @@ pub fn merge_system(backend : &Backend) -> Unit {
 pub fn force_system(_backend : &Backend) -> Unit {
   for pair in cats_by_entity {
     let (entity, _cat) = pair
-    global_v[entity].y += GRAVITY // Gravity
-    global_v[entity].x *= 1.0 - FRICTION // Friction
-    if global_v[entity].x < 0.01 && global_v[entity].x > -0.01 {
-      global_v[entity].x = 0.0
+    global_velocity[entity].y += GRAVITY // Gravity
+    global_velocity[entity].x *= 1.0 - FRICTION // Friction
+    if global_velocity[entity].x < 0.01 && global_velocity[entity].x > -0.01 {
+      global_velocity[entity].x = 0.0
     }
   }
 }
@@ -88,8 +71,7 @@ fn play_sound_system(backend : &Backend) -> Unit {
     let cat_opt = cats_by_entity.get(cat_entity)
     if cat_opt is Some(_) {
       let cat = cat_opt.unwrap()
-      let sound_path = get_level_data(cat.level).sound
-      backend.play_audio(sound_path, volume=1.0, loop_=false)
+      backend.play_audio(cat.sound(), volume=1.0, loop_=false)
     }
   }
   game_state.cats_clicked.clear()
