@@ -1,5 +1,5 @@
 ///|
-pub fn bind_key(key : Code, trigger : Trigger, handler : () -> Unit) -> Unit {
+fn bind_key(key : Code, trigger : Trigger, handler : () -> Unit) -> Unit {
   match trigger {
     Pressed => if is_just_pressed(key) { handler() }
     KeepPressed => if is_pressed(key) { handler() }
@@ -8,7 +8,7 @@ pub fn bind_key(key : Code, trigger : Trigger, handler : () -> Unit) -> Unit {
 }
 
 ///|
-pub fn bind_keys(
+fn bind_keys(
   keys : Array[Code],
   trigger : Trigger,
   handler : () -> Unit,
@@ -27,7 +27,7 @@ pub fn bind_keys(
 }
 
 ///|
-pub fn ptr_move(move_state : MoveState) -> Unit {
+fn ptr_move(move_state : MoveState) -> Unit {
   let velocity = global_velocity[ptr_entity]
   let position = global_position[ptr_entity]
   let ptr_size = 32.0 + game_state.next_cat_level.to_double() * 16.0
@@ -60,14 +60,14 @@ pub fn ptr_move(move_state : MoveState) -> Unit {
 }
 
 ///|
-pub fn cat_move(move_state : MoveState) -> Unit {
+fn cat_move(move_state : MoveState) -> Unit {
   cats_by_entity.each((e, c) => global_velocity[e].x = move_state.signum() *
     CAT_MOVE_FORCE /
     c.level.to_double())
 }
 
 ///|
-pub fn music_play(backend : &Backend) -> Unit {
+fn music_play(backend : &Backend) -> Unit {
   if !game_state.background_music_started {
     backend.play_audio(
       "./assets/Sounds/background_music.wav",
@@ -79,7 +79,7 @@ pub fn music_play(backend : &Backend) -> Unit {
 }
 
 ///|
-pub fn cat_drop(backend : &Backend) -> Unit {
+fn cat_drop(backend : &Backend) -> Unit {
   let ptr_position = global_position[ptr_entity]
   let level = game_state.next_cat_level
   let _ = Cat::new(ptr_position.0, level)

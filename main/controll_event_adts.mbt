@@ -1,5 +1,5 @@
 ///|
-pub enum MoveState {
+enum MoveState {
   Left
   Right
   Stop
@@ -20,7 +20,7 @@ impl SigNum for MoveState with signum(state) {
 }
 
 ///|
-pub enum Trigger {
+enum Trigger {
   Pressed
   KeepPressed
   NotPressed

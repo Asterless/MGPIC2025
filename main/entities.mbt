@@ -1,11 +1,11 @@
 ///|
-pub struct Cat {
+struct Cat {
   entity : Entity
   level : Int
 }
 
 ///|
-pub fn Cat::new(position : Vec2D, level : Int) -> Cat {
+fn Cat::new(position : Vec2D, level : Int) -> Cat {
   let entity = Entity::new()
   let cat : Cat = { entity, level }
   let size = cat.get_size()
@@ -52,7 +52,7 @@ pub fn Cat::new(position : Vec2D, level : Int) -> Cat {
 }
 
 ///|
-pub fn Cat::merge(self : Cat, other : Cat) -> Unit {
+fn Cat::merge(self : Cat, other : Cat) -> Unit {
   set_score(game_state.score + self.get_merge_score())
   let position_cat_1 = global_position[self.entity].0
   let position_cat_2 = global_position[other.entity].0
@@ -77,46 +77,46 @@ pub fn Cat::merge(self : Cat, other : Cat) -> Unit {
 }
 
 ///|
-pub fn Cat::get_size(self : Cat) -> Double {
-  (self.level - 1).to_double() * 16.0 + 32.0
+fn Cat::get_size(self : Cat) -> Double {
+  Cat::get_size_by_level(self.level)
 }
 
 ///|
-pub fn Cat::get_size_by_level(level : Int) -> Double {
+fn Cat::get_size_by_level(level : Int) -> Double {
   (level - 1).to_double() * 16.0 + 32.0
 }
 
 ///|
-pub fn Cat::get_merge_score(self : Cat) -> Int {
+fn Cat::get_merge_score(self : Cat) -> Int {
   @math.pow(2.0, self.level.to_double()).to_int()
 }
 
 ///|
-pub fn Cat::get_picture(self : Cat) -> Picture {
+fn Cat::get_picture(self : Cat) -> Picture {
   let size = self.get_size()
   let size_vec = Vec2D::new(size, size)
   Picture::new(size_vec, "assets/Memes/cat_lv\{self.level}_\{size}x\{size}.png")
 }
 
 ///|
-pub fn Cat::get_picture_by_level(level : Int) -> Picture {
+fn Cat::get_picture_by_level(level : Int) -> Picture {
   let size = Cat::get_size_by_level(level)
   let size_vec = Vec2D::new(size, size)
   Picture::new(size_vec, "assets/Memes/cat_lv\{level}_\{size}x\{size}.png")
 }
 
 ///|
-pub fn Cat::get_sound_path(self : Cat) -> String {
-  "assets/Sounds/merge_lv\{self.level}.wav"
+fn Cat::get_sound_path(self : Cat) -> String {
+  Cat::get_sound_path_by_level(self.level)
 }
 
 ///|
-pub fn Cat::get_sound_path_by_level(level : Int) -> String {
+fn Cat::get_sound_path_by_level(level : Int) -> String {
   "assets/Sounds/merge_lv\{level}.wav"
 }
 
 ///|
-pub fn Cat::get_collision_layer(self : Cat) -> CollisionLayer {
+fn Cat::get_collision_layer(self : Cat) -> CollisionLayer {
   let level = self.level
   if level > 0 && level <= cat_collision_layers.length() {
     cat_collision_layers[level - 1]
@@ -126,7 +126,7 @@ pub fn Cat::get_collision_layer(self : Cat) -> CollisionLayer {
 }
 
 ///|
-pub fn Cat::get_collision_mask_layers(self : Cat) -> Array[CollisionLayer] {
+fn Cat::get_collision_mask_layers(self : Cat) -> Array[CollisionLayer] {
   let layers = Array::new()
   layers.push(terrain_collision_layer)
   for i = 0; i < cat_collision_layers.length(); i = i + 1 {

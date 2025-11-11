@@ -1,5 +1,5 @@
 ///|
-pub fn input_system(backend : &Backend) -> Unit {
+fn input_system(backend : &Backend) -> Unit {
   // Move pointer
   bind_key(KeyA, KeepPressed, () => ptr_move(Left))
   bind_key(KeyD, KeepPressed, () => ptr_move(Right))
@@ -23,7 +23,7 @@ pub fn input_system(backend : &Backend) -> Unit {
 }
 
 ///|
-pub fn merge_system(backend : &Backend) -> Unit {
+fn merge_system(backend : &Backend) -> Unit {
   let merged_this_frame = @hashset.HashSet::new() // Guard against multiple merges in one frame
   for pair in game_state.to_merge {
     let (cat1_entity, cat2_entity) = pair
@@ -54,7 +54,7 @@ pub fn merge_system(backend : &Backend) -> Unit {
 }
 
 ///|
-pub fn force_system(_backend : &Backend) -> Unit {
+fn force_system(_backend : &Backend) -> Unit {
   for pair in cats_by_entity {
     let (entity, _cat) = pair
     global_velocity[entity].y += GRAVITY // Gravity

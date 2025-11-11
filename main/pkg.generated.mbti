@@ -2,12 +2,7 @@
 package "Asterless/MGPIC2025/main"
 
 import(
-  "Milky2018/selene/collision"
-  "Milky2018/selene/math"
-  "Milky2018/selene/sprite"
   "Milky2018/selene/system"
-  "moonbitlang/core/hashmap"
-  "moonbitlang/core/hashset"
 )
 
 // Values
@@ -56,14 +51,6 @@ fn music_play(&@system.Backend) -> Unit
 let pointer_collision_layer : @collision.CollisionLayer
 
 let ptr_entity : @system.Entity
-
-fn ptr_move(MoveState) -> Unit
-
-fn random_cat_level() -> Int
-
-fn set_score(Int) -> Unit
-
-let terrain_collision_layer : @collision.CollisionLayer
 
 // Errors
 
