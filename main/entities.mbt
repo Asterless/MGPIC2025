@@ -1,21 +1,27 @@
 ///|
+pub struct Cat {
+  entity : Entity
+  level : Int
+}
+
+///|
 pub fn add_cat(position : Vec2D, level : Int) -> Cat {
   let entity = Entity::new()
-  let data = get_level_data(level)
+  let cat : Cat = { entity, level }
+  let size = cat.size()
   let velocity = @velocity.Velocity(Vec2D::zero())
-  let picture = cat_picture(level)
-  let cat_layer = get_cat_collision_layer(level)
+  let cat_layer = cat.collision_layer()
   let collide : Collide = Collide::{
     shape: CollisionShape::Rect(
-      size=Vec2D::new(data.size, data.size),
+      size=Vec2D::new(size, size),
       offset=Vec2D::zero(),
     ),
     layer: cat_layer,
-    mask: CollisionMask::new(cat_collision_mask_layers(level)),
+    mask: CollisionMask::new(cat.collision_mask_layers()),
   }
   let area : Area = Area::new(
     CollisionShape::Rect(
-      size=Vec2D::new(data.size * 1.2, data.size * 1.2),
+      size=Vec2D::new(size * 1.2, size * 1.2),
       offset=Vec2D::zero(),
     ),
     cat_layer,
@@ -33,12 +39,98 @@ pub fn add_cat(position : Vec2D, level : Int) -> Cat {
   area.on_just_pressed(fn(_button : MouseButton) {
     game_state.cats_clicked.add(self_entity)
   })
-  let cat : Cat = { entity, level }
   cats_by_entity.set(entity, cat)
-  global_p[entity] = position
-  global_v[entity] = velocity
-  global_c[entity] = collide
-  global_a[entity] = area
-  global_s[entity] = Sprite::new_picture(picture, 10) //Zindex 10 to be above the pointer
+  g_position[entity] = position
+  g_velocity[entity] = velocity
+  g_collides[entity] = collide
+  g_areas[entity] = area
+  g_sprites[entity] = Sprite::new_picture(cat.picture(), 10) //Zindex 10 to be above the pointer
   cat
+}
+
+///|
+pub fn Cat::merge(self : Cat, other : Cat) -> Unit {
+  set_score(game_state.score + self.merge_score())
+  let p_cat_1 = g_position[self.entity].0
+  let p_cat_2 = g_position[other.entity].0
+  let cat_x = {
+    let p_mid = (p_cat_1.x + p_cat_2.x) / 2.0
+    let size = self.size() + 16.0
+    if CANVAS_WIDTH - p_mid - 16.0 < size {
+      CANVAS_WIDTH - 17.0 - size
+    } else if p_mid - 16.0 < 0 {
+      17.0 + size
+    } else {
+      p_mid
+    }
+  }
+  let p_mid = Vec2D::{ x: cat_x, y: 0 }
+  let merged = add_cat(p_mid, self.level + 1)
+  g_velocity[merged.entity].y = 1000
+  cats_by_entity.remove(self.entity)
+  cats_by_entity.remove(other.entity)
+  Entity::destroy(self.entity)
+  Entity::destroy(other.entity)
+}
+
+///|
+pub fn Cat::size(self : Cat) -> Double {
+  (self.level - 1).to_double() * 16.0 + 32.0
+}
+
+///|
+pub fn Cat::size_by_level(level : Int) -> Double {
+  (level - 1).to_double() * 16.0 + 32.0
+}
+
+///|
+pub fn Cat::merge_score(self : Cat) -> Int {
+  @math.pow(2.0, self.level.to_double()).to_int()
+}
+
+///|
+pub fn Cat::picture(self : Cat) -> Picture {
+  let size = self.size()
+  let size_vec = Vec2D::new(size, size)
+  Picture::new(size_vec, "assets/Memes/cat_lv\{self.level}_\{size}x\{size}.png")
+}
+
+///|
+pub fn Cat::picture_by_level(level : Int) -> Picture {
+  let size = Cat::size_by_level(level)
+  let size_vec = Vec2D::new(size, size)
+  Picture::new(size_vec, "assets/Memes/cat_lv\{level}_\{size}x\{size}.png")
+}
+
+///|
+pub fn Cat::sound(self : Cat) -> String {
+  "assets/Sounds/merge_lv\{self.level}.wav"
+}
+
+///|
+pub fn Cat::sound_by_level(level : Int) -> String {
+  "assets/Sounds/merge_lv\{level}.wav"
+}
+
+///|
+pub fn Cat::collision_layer(self : Cat) -> CollisionLayer {
+  let level = self.level
+  if level > 0 && level <= cat_collision_layers.length() {
+    cat_collision_layers[level - 1]
+  } else {
+    cat_collision_layers[0]
+  }
+}
+
+///|
+pub fn Cat::collision_mask_layers(self : Cat) -> Array[CollisionLayer] {
+  let layers = Array::new()
+  layers.push(terrain_collision_layer)
+  for i = 0; i < cat_collision_layers.length(); i = i + 1 {
+    // Corrected logic: Add all layers EXCEPT the current cat's own level.
+    if i != self.level - 1 {
+      layers.push(cat_collision_layers[i])
+    }
+  }
+  layers
 }

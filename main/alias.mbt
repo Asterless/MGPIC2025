@@ -5,7 +5,7 @@ using @hashset {type HashSet}
 using @hashmap {type HashMap}
 
 ///|
-using @math {type Vec2D}
+using @cmath {type Vec2D}
 
 ///|
 using @system {type Code, type Entity, type MouseButton, trait Backend}
@@ -14,13 +14,19 @@ using @system {type Code, type Entity, type MouseButton, trait Backend}
 using @system {is_pressed, is_just_pressed}
 
 ///|
-using @velocity {type Velocity}
+using @velocity {type Velocity, velocities as g_velocity}
 
 ///|
-using @position {type Position}
+using @position {type Position, positions as g_position}
 
 ///|
-using @sprite {type Sprite, type Text, type Picture, type Animation}
+using @sprite {
+  type Sprite,
+  type Text,
+  type Picture,
+  type Animation,
+  sprites as g_sprites,
+}
 
 ///|
 using @collision {
@@ -29,22 +35,9 @@ using @collision {
   type CollisionMask,
   type CollisionShape,
   type Area,
+  collides as g_collides,
+  areas as g_areas,
 }
-
-///|
-pub let global_v : Map[Entity, Velocity] = @velocity.velocities
-
-///|
-pub let global_c : Map[Entity, Collide] = @collision.collides
-
-///|
-pub let global_a : Map[Entity, Area] = @collision.areas
-
-///|
-pub let global_s : Map[Entity, Sprite] = @sprite.sprites
-
-///|
-pub let global_p : Map[Entity, Position] = @position.positions
 
 ///|
 pub let ptr_entity : Entity = game_state.pointer_entity

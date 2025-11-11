@@ -26,9 +26,9 @@ pub fn bind_keys(
 
 ///|
 pub fn ptr_move(move_state : MoveState) -> Unit {
-  let v = global_v[ptr_entity]
-  let p = global_p[ptr_entity]
-  let ptr_size = cat_size(game_state.next_cat_level)
+  let v = g_velocity[ptr_entity]
+  let p = g_position[ptr_entity]
+  let ptr_size = 32.0 + game_state.next_cat_level.to_double() * 16.0
   let left_bound = 16.0
   let right_bound = CANVAS_WIDTH - 16.0 - ptr_size
   if p.x < left_bound {
@@ -59,7 +59,7 @@ pub fn ptr_move(move_state : MoveState) -> Unit {
 
 ///|
 pub fn cat_move(move_state : MoveState) -> Unit {
-  cats_by_entity.each((e, c) => global_v[e].x = move_state.signum() *
+  cats_by_entity.each((e, c) => g_velocity[e].x = move_state.signum() *
     4.0 /
     c.level.to_double())
 }
@@ -78,11 +78,13 @@ pub fn music_play(backend : &Backend) -> Unit {
 
 ///|
 pub fn cat_drop(backend : &Backend) -> Unit {
-  let ptr_p = global_p[ptr_entity]
-  let _ = add_cat(ptr_p.0, game_state.next_cat_level)
+  let ptr_p = g_position[ptr_entity]
+  let level = game_state.next_cat_level
+  let _ = add_cat(ptr_p.0, level)
   game_state.next_cat_level = random_cat_level()
+  let level = game_state.next_cat_level
   game_state.pointer_sprite = Sprite::new_picture(
-    cat_picture(game_state.next_cat_level),
+    Cat::picture_by_level(level),
     10,
   )
   backend.play_audio("./assets/sounds/jump.wav", volume=1.0, loop_=false)
