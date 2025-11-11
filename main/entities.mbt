@@ -93,9 +93,7 @@ fn Cat::get_merge_score(self : Cat) -> Int {
 
 ///|
 fn Cat::get_picture(self : Cat) -> Picture {
-  let size = self.get_size()
-  let size_vec = Vec2D::new(size, size)
-  Picture::new(size_vec, "assets/Memes/cat_lv\{self.level}_\{size}x\{size}.png")
+  Cat::get_picture_by_level(self.level)
 }
 
 ///|
