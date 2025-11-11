@@ -13,7 +13,7 @@ fn input_system(backend : &Backend) -> Unit {
   let collide : Collide = Collide::{
     shape: CollisionShape::Rect(
       size=Vec2D::new(32.0, 32.0),
-      offset=Vec2D::new(0.0, 0.0),
+      offset=Vec2D::zero(),
     ),
     layer: pointer_collision_layer,
     mask: CollisionMask::new([terrain_collision_layer]),
@@ -43,7 +43,7 @@ fn merge_system(backend : &Backend) -> Unit {
       // Perform merge
       cat1.merge(cat2)
       backend.play_audio(
-        Cat::sound_by_level(cat1.level + 1),
+        Cat::get_sound_path_by_level(cat1.level + 1),
         volume=0.8,
         loop_=false,
       )
@@ -71,7 +71,7 @@ fn play_sound_system(backend : &Backend) -> Unit {
     let cat_opt = cats_by_entity.get(cat_entity)
     if cat_opt is Some(_) {
       let cat = cat_opt.unwrap()
-      backend.play_audio(cat.sound(), volume=1.0, loop_=false)
+      backend.play_audio(cat.get_sound_path(), volume=1.0, loop_=false)
     }
   }
   game_state.cats_clicked.clear()

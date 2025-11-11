@@ -6,18 +6,93 @@ import(
 )
 
 // Values
+const CANVAS_HEIGHT : Double = 600.0
+
+const CANVAS_WIDTH : Double = 480.0
+
+const FRICTION : Double = 0.1
+
+const GRAVITY : Double = 0.3
+
+fn add_background() -> Unit
+
+fn add_bottom(@math.Vec2D) -> Unit
+
+fn add_pointer() -> Unit
+
+fn add_score_bar() -> Unit
+
+fn add_side_walls(@math.Vec2D) -> Unit
+
+fn bind_key(@system.Code, Trigger, () -> Unit) -> Unit
+
+fn bind_keys(Array[@system.Code], Trigger, () -> Unit) -> Unit
+
+let cat_collision_layers : Array[@collision.CollisionLayer]
+
+fn cat_drop(&@system.Backend) -> Unit
+
+fn cat_move(MoveState) -> Unit
+
+let cats_by_entity : @hashmap.HashMap[@system.Entity, Cat]
+
+fn force_system(&@system.Backend) -> Unit
+
+fn game_start(&@system.Backend) -> Unit
+
+let game_state : GameState
+
+fn input_system(&@system.Backend) -> Unit
+
+fn merge_system(&@system.Backend) -> Unit
+
+fn music_play(&@system.Backend) -> Unit
+
+let pointer_collision_layer : @collision.CollisionLayer
+
 let ptr_entity : @system.Entity
 
 // Errors
 
 // Types and methods
-type Cat
+pub struct Cat {
+  entity : @system.Entity
+  level : Int
+}
+fn Cat::get_collision_layer(Self) -> @collision.CollisionLayer
+fn Cat::get_collision_mask_layers(Self) -> Array[@collision.CollisionLayer]
+fn Cat::get_merge_score(Self) -> Int
+fn Cat::get_picture(Self) -> @sprite.Picture
+fn Cat::get_picture_by_level(Int) -> @sprite.Picture
+fn Cat::get_size(Self) -> Double
+fn Cat::get_size_by_level(Int) -> Double
+fn Cat::get_sound_path(Self) -> String
+fn Cat::get_sound_path_by_level(Int) -> String
+fn Cat::merge(Self, Self) -> Unit
+fn Cat::new(@math.Vec2D, Int) -> Self
 
-type GameState
+pub struct GameState {
+  pointer_entity : @system.Entity
+  mut pointer_sprite : @sprite.Sprite
+  mut score : Int
+  score_bar : @sprite.Text
+  mut next_cat_level : Int
+  to_merge : @hashset.HashSet[(@system.Entity, @system.Entity)]
+  mut background_music_started : Bool
+  cats_clicked : @hashset.HashSet[@system.Entity]
+}
 
-type MoveState
+pub enum MoveState {
+  Left
+  Right
+  Stop
+}
 
-type Trigger
+pub enum Trigger {
+  Pressed
+  KeepPressed
+  NotPressed
+}
 
 // Type aliases
 

@@ -14,8 +14,11 @@ struct GameState {
 /// Game state initialization
 let game_state : GameState = {
   pointer_entity: Entity::new(),
-  pointer_sprite: Sprite::new_picture(Cat::picture_by_level(1), 10),
-  score: 0,
+  pointer_sprite: Sprite::new_picture(
+    Cat::get_picture_by_level(1),
+    ZINDEX_FOR_POINTER,
+  ),
+  score: INIT_SCORE,
   score_bar: Text::new("", font="60px ThaleahFat", color="White"),
   next_cat_level: 1,
   to_merge: HashSet::new(),

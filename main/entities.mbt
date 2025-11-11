@@ -5,19 +5,19 @@ struct Cat {
 }
 
 ///|
-fn add_cat(position : Vec2D, level : Int) -> Cat {
+fn Cat::new(position : Vec2D, level : Int) -> Cat {
   let entity = Entity::new()
   let cat : Cat = { entity, level }
-  let size = cat.size()
+  let size = cat.get_size()
   let velocity = @velocity.Velocity(Vec2D::zero())
-  let cat_layer = cat.collision_layer()
+  let cat_layer = cat.get_collision_layer()
   let collide : Collide = Collide::{
     shape: CollisionShape::Rect(
       size=Vec2D::new(size, size),
       offset=Vec2D::zero(),
     ),
     layer: cat_layer,
-    mask: CollisionMask::new(cat.collision_mask_layers()),
+    mask: CollisionMask::new(cat.get_collision_mask_layers()),
   }
   let area : Area = Area::new(
     CollisionShape::Rect(
@@ -44,28 +44,31 @@ fn add_cat(position : Vec2D, level : Int) -> Cat {
   global_velocity[entity] = velocity
   global_collides[entity] = collide
   global_areas[entity] = area
-  global_sprites[entity] = Sprite::new_picture(cat.picture(), 10) //Zindex 10 to be above the pointer
+  global_sprites[entity] = Sprite::new_picture(
+    cat.get_picture(),
+    ZINDEX_FOR_CATS,
+  ) //Zindex 10 to be above the pointer
   cat
 }
 
 ///|
 fn Cat::merge(self : Cat, other : Cat) -> Unit {
-  set_score(game_state.score + self.merge_score())
-  let p_cat_1 = global_position[self.entity].0
-  let p_cat_2 = global_position[other.entity].0
+  set_score(game_state.score + self.get_merge_score())
+  let position_cat_1 = global_position[self.entity].0
+  let position_cat_2 = global_position[other.entity].0
   let cat_x = {
-    let p_mid = (p_cat_1.x + p_cat_2.x) / 2.0
-    let size = self.size() + 16.0
-    if CANVAS_WIDTH - p_mid - 16.0 < size {
+    let position_mid = (position_cat_1.x + position_cat_2.x) / 2.0
+    let size = self.get_size() + 16.0
+    if CANVAS_WIDTH - position_mid - 16.0 < size {
       CANVAS_WIDTH - 17.0 - size
-    } else if p_mid - 16.0 < 0 {
+    } else if position_mid - 16.0 < 0 {
       17.0 + size
     } else {
-      p_mid
+      position_mid
     }
   }
   let p_mid = Vec2D::{ x: cat_x, y: 0 }
-  let merged = add_cat(p_mid, self.level + 1)
+  let merged = Cat::new(p_mid, self.level + 1)
   global_velocity[merged.entity].y = 1000
   cats_by_entity.remove(self.entity)
   cats_by_entity.remove(other.entity)
@@ -74,44 +77,44 @@ fn Cat::merge(self : Cat, other : Cat) -> Unit {
 }
 
 ///|
-fn Cat::size(self : Cat) -> Double {
-  Cat::size_by_level(self.level)
+fn Cat::get_size(self : Cat) -> Double {
+  Cat::get_size_by_level(self.level)
 }
 
 ///|
-fn Cat::size_by_level(level : Int) -> Double {
+fn Cat::get_size_by_level(level : Int) -> Double {
   (level - 1).to_double() * 16.0 + 32.0
 }
 
 ///|
-fn Cat::merge_score(self : Cat) -> Int {
+fn Cat::get_merge_score(self : Cat) -> Int {
   @math.pow(2.0, self.level.to_double()).to_int()
 }
 
 ///|
-fn Cat::picture(self : Cat) -> Picture {
-  Cat::picture_by_level(self.level)
+fn Cat::get_picture(self : Cat) -> Picture {
+  Cat::get_picture_by_level(self.level)
 }
 
 ///|
-fn Cat::picture_by_level(level : Int) -> Picture {
-  let size = Cat::size_by_level(level)
+fn Cat::get_picture_by_level(level : Int) -> Picture {
+  let size = Cat::get_size_by_level(level)
   let size_vec = Vec2D::new(size, size)
   Picture::new(size_vec, "assets/Memes/cat_lv\{level}_\{size}x\{size}.png")
 }
 
 ///|
-fn Cat::sound(self : Cat) -> String {
-  Cat::sound_by_level(self.level)
+fn Cat::get_sound_path(self : Cat) -> String {
+  Cat::get_sound_path_by_level(self.level)
 }
 
 ///|
-fn Cat::sound_by_level(level : Int) -> String {
+fn Cat::get_sound_path_by_level(level : Int) -> String {
   "assets/Sounds/merge_lv\{level}.wav"
 }
 
 ///|
-fn Cat::collision_layer(self : Cat) -> CollisionLayer {
+fn Cat::get_collision_layer(self : Cat) -> CollisionLayer {
   let level = self.level
   if level > 0 && level <= cat_collision_layers.length() {
     cat_collision_layers[level - 1]
@@ -121,7 +124,7 @@ fn Cat::collision_layer(self : Cat) -> CollisionLayer {
 }
 
 ///|
-fn Cat::collision_mask_layers(self : Cat) -> Array[CollisionLayer] {
+fn Cat::get_collision_mask_layers(self : Cat) -> Array[CollisionLayer] {
   let layers = Array::new()
   layers.push(terrain_collision_layer)
   for i = 0; i < cat_collision_layers.length(); i = i + 1 {

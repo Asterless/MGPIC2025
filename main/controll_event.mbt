@@ -28,33 +28,33 @@ fn bind_keys(
 
 ///|
 fn ptr_move(move_state : MoveState) -> Unit {
-  let v = global_velocity[ptr_entity]
-  let p = global_position[ptr_entity]
+  let velocity = global_velocity[ptr_entity]
+  let position = global_position[ptr_entity]
   let ptr_size = 32.0 + game_state.next_cat_level.to_double() * 16.0
   let left_bound = 16.0
   let right_bound = CANVAS_WIDTH - 16.0 - ptr_size
-  if p.x < left_bound {
-    v.x = 0.0
-    p.x = left_bound
-  } else if p.x > right_bound {
-    v.x = 0.0
-    p.x = right_bound
+  if position.x < left_bound {
+    velocity.x = 0.0
+    position.x = left_bound
+  } else if position.x > right_bound {
+    velocity.x = 0.0
+    position.x = right_bound
   }
   match move_state {
-    Stop => v.x = 0.0
+    Stop => velocity.x = 0.0
     Left =>
-      if p.x <= left_bound {
-        v.x = 0.0
-        p.x = left_bound
-      } else if v.x > -PTR_MAX_VEC_H {
-        v.x -= PTR_ACC_H
+      if position.x <= left_bound {
+        velocity.x = 0.0
+        position.x = left_bound
+      } else if velocity.x > -PTR_MAX_VEC_H {
+        velocity.x -= PTR_ACC_H
       }
     Right =>
-      if p.x >= right_bound {
-        v.x = 0.0
-        p.x = right_bound
-      } else if v.x < PTR_MAX_VEC_H {
-        v.x += PTR_ACC_H
+      if position.x >= right_bound {
+        velocity.x = 0.0
+        position.x = right_bound
+      } else if velocity.x < PTR_MAX_VEC_H {
+        velocity.x += PTR_ACC_H
       }
   }
 }
@@ -80,14 +80,14 @@ fn music_play(backend : &Backend) -> Unit {
 
 ///|
 fn cat_drop(backend : &Backend) -> Unit {
-  let ptr_p = global_position[ptr_entity]
+  let ptr_position = global_position[ptr_entity]
   let level = game_state.next_cat_level
-  let _ = add_cat(ptr_p.0, level)
+  let _ = Cat::new(ptr_position.0, level)
   game_state.next_cat_level = random_cat_level()
   let level = game_state.next_cat_level
   game_state.pointer_sprite = Sprite::new_picture(
-    Cat::picture_by_level(level),
-    10,
+    Cat::get_picture_by_level(level),
+    ZINDEX_FOR_POINTER,
   )
   backend.play_audio("./assets/sounds/drop.wav", volume=1.0, loop_=false)
 }
