@@ -61,7 +61,7 @@ pub fn ptr_move(move_state : MoveState) -> Unit {
 
 ///|
 pub fn cat_move(move_state : MoveState) -> Unit {
-  cats_by_entity.each((e, c) => global_v[e].x = move_state.signum() *
+  cats_by_entity.each((e, c) => global_velocity[e].x = move_state.signum() *
     CAT_MOVE_FORCE /
     c.level.to_double())
 }
