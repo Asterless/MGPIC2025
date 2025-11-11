@@ -67,7 +67,7 @@ fn Cat::merge(self : Cat, other : Cat) -> Unit {
       position_mid
     }
   }
-  let p_mid = Vec2D::{ x: cat_x, y: 0 }
+  let p_mid = Vec2D::{ x: cat_x, y: 17 }
   let merged = Cat::new(p_mid, self.level + 1)
   global_velocity[merged.entity].y = 1000
   cats_by_entity.remove(self.entity)

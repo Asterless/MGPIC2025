@@ -3,7 +3,9 @@ fn game_start(_backend : &Backend) -> Unit {
   add_pointer()
   for x = 0.0; x < CANVAS_WIDTH; x = x + 16.0 {
     add_bottom(Vec2D::new(x, CANVAS_HEIGHT - 16.0))
+    add_top(Vec2D::new(x, 0.0))
   }
+
   for x = 0.0; x < CANVAS_HEIGHT; x = x + 16.0 * 3.0 {
     add_side_walls(Vec2D::new(0, x))
     add_side_walls(Vec2D::new(CANVAS_WIDTH - 16.0, x))
@@ -20,6 +22,28 @@ fn add_pointer() -> Unit {
   global_sprite[ptr_entity] = game_state.pointer_sprite
 }
 
+fn add_top(pos : Vec2D) -> Unit {
+  let entity = Entity::new()
+  global_position[entity] = pos
+  let animation = Animation::new(
+    "./assets/Terrain/Terrain (16x16).png",
+    max_frame=1,
+    height=16,
+    width=16,
+    offset=Vec2D::new(16.0 * 13, 0.0),
+  )
+  let sprite = Sprite::new_animation(animation, ZINDEX_FOR_TERRAIN)
+  global_sprite[entity] = sprite
+  let collide : Collide = Collide::{
+    shape: CollisionShape::Rect(
+      size=Vec2D::new(16.0, 16.0),
+      offset=Vec2D::zero(),
+    ),
+    layer: terrain_collision_layer,
+    mask: CollisionMask::empty(),
+  }
+  global_collide[entity] = collide
+}
 ///|
 fn add_bottom(pos : Vec2D) -> Unit {
   let entity = Entity::new()
