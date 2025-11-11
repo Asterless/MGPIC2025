@@ -1,11 +1,11 @@
 ///|
-pub struct Cat {
+struct Cat {
   entity : Entity
   level : Int
 }
 
 ///|
-pub fn add_cat(position : Vec2D, level : Int) -> Cat {
+fn add_cat(position : Vec2D, level : Int) -> Cat {
   let entity = Entity::new()
   let cat : Cat = { entity, level }
   let size = cat.size()
@@ -49,7 +49,7 @@ pub fn add_cat(position : Vec2D, level : Int) -> Cat {
 }
 
 ///|
-pub fn Cat::merge(self : Cat, other : Cat) -> Unit {
+fn Cat::merge(self : Cat, other : Cat) -> Unit {
   set_score(game_state.score + self.merge_score())
   let p_cat_1 = global_position[self.entity].0
   let p_cat_2 = global_position[other.entity].0
@@ -74,46 +74,46 @@ pub fn Cat::merge(self : Cat, other : Cat) -> Unit {
 }
 
 ///|
-pub fn Cat::size(self : Cat) -> Double {
+fn Cat::size(self : Cat) -> Double {
   (self.level - 1).to_double() * 16.0 + 32.0
 }
 
 ///|
-pub fn Cat::size_by_level(level : Int) -> Double {
+fn Cat::size_by_level(level : Int) -> Double {
   (level - 1).to_double() * 16.0 + 32.0
 }
 
 ///|
-pub fn Cat::merge_score(self : Cat) -> Int {
+fn Cat::merge_score(self : Cat) -> Int {
   @math.pow(2.0, self.level.to_double()).to_int()
 }
 
 ///|
-pub fn Cat::picture(self : Cat) -> Picture {
+fn Cat::picture(self : Cat) -> Picture {
   let size = self.size()
   let size_vec = Vec2D::new(size, size)
   Picture::new(size_vec, "assets/Memes/cat_lv\{self.level}_\{size}x\{size}.png")
 }
 
 ///|
-pub fn Cat::picture_by_level(level : Int) -> Picture {
+fn Cat::picture_by_level(level : Int) -> Picture {
   let size = Cat::size_by_level(level)
   let size_vec = Vec2D::new(size, size)
   Picture::new(size_vec, "assets/Memes/cat_lv\{level}_\{size}x\{size}.png")
 }
 
 ///|
-pub fn Cat::sound(self : Cat) -> String {
+fn Cat::sound(self : Cat) -> String {
   "assets/Sounds/merge_lv\{self.level}.wav"
 }
 
 ///|
-pub fn Cat::sound_by_level(level : Int) -> String {
+fn Cat::sound_by_level(level : Int) -> String {
   "assets/Sounds/merge_lv\{level}.wav"
 }
 
 ///|
-pub fn Cat::collision_layer(self : Cat) -> CollisionLayer {
+fn Cat::collision_layer(self : Cat) -> CollisionLayer {
   let level = self.level
   if level > 0 && level <= cat_collision_layers.length() {
     cat_collision_layers[level - 1]
@@ -123,7 +123,7 @@ pub fn Cat::collision_layer(self : Cat) -> CollisionLayer {
 }
 
 ///|
-pub fn Cat::collision_mask_layers(self : Cat) -> Array[CollisionLayer] {
+fn Cat::collision_mask_layers(self : Cat) -> Array[CollisionLayer] {
   let layers = Array::new()
   layers.push(terrain_collision_layer)
   for i = 0; i < cat_collision_layers.length(); i = i + 1 {

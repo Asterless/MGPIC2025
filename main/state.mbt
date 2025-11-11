@@ -1,5 +1,5 @@
 ///|
-pub struct GameState {
+struct GameState {
   pointer_entity : Entity
   mut pointer_sprite : Sprite
   mut score : Int
@@ -12,7 +12,7 @@ pub struct GameState {
 
 ///|
 /// Game state initialization
-pub let game_state : GameState = {
+let game_state : GameState = {
   pointer_entity: Entity::new(),
   pointer_sprite: Sprite::new_picture(Cat::picture_by_level(1), 10),
   score: 0,
@@ -24,16 +24,16 @@ pub let game_state : GameState = {
 }
 
 ///|
-pub let cats_by_entity : HashMap[Entity, Cat] = HashMap::new()
+let cats_by_entity : HashMap[Entity, Cat] = HashMap::new()
 
 ///|
-pub let pointer_collision_layer : CollisionLayer = CollisionLayer::new()
+let pointer_collision_layer : CollisionLayer = CollisionLayer::new()
 
 ///|
-pub let terrain_collision_layer : CollisionLayer = CollisionLayer::new()
+let terrain_collision_layer : CollisionLayer = CollisionLayer::new()
 
 ///|
-pub let cat_collision_layers : Array[CollisionLayer] = [
+let cat_collision_layers : Array[CollisionLayer] = [
   CollisionLayer::new(), // level 1
   CollisionLayer::new(), // level 2
   CollisionLayer::new(), // level 3
