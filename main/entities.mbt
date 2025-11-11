@@ -42,9 +42,9 @@ fn Cat::new(position : Vec2D, level : Int) -> Cat {
   cats_by_entity.set(entity, cat)
   global_position[entity] = position
   global_velocity[entity] = velocity
-  global_collides[entity] = collide
-  global_areas[entity] = area
-  global_sprites[entity] = Sprite::new_picture(
+  global_collide[entity] = collide
+  global_area[entity] = area
+  global_sprite[entity] = Sprite::new_picture(
     cat.get_picture(),
     ZINDEX_FOR_CATS,
   ) //Zindex 10 to be above the pointer

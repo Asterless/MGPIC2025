@@ -9,7 +9,7 @@ fn input_system(backend : &Backend) -> Unit {
   bind_key(KeyE, Pressed, () => cat_move(Right))
   // Play Music and Drop Cats
   bind_key(Space, Pressed, () => cat_drop(backend))
-  global_sprites[ptr_entity] = game_state.pointer_sprite
+  global_sprite[ptr_entity] = game_state.pointer_sprite
   let collide : Collide = Collide::{
     shape: CollisionShape::Rect(
       size=Vec2D::new(32.0, 32.0),
@@ -18,7 +18,7 @@ fn input_system(backend : &Backend) -> Unit {
     layer: pointer_collision_layer,
     mask: CollisionMask::new([terrain_collision_layer]),
   }
-  global_collides[ptr_entity] = collide
+  global_collide[ptr_entity] = collide
   bind_key(Space, Pressed, () => music_play(backend))
 }
 
