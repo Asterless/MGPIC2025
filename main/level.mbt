@@ -121,6 +121,14 @@ fn add_score_bar() -> Unit {
     Text::new("Pause Q/E to switch", font="30px ThaleahFat", color="Gray"),
     Vec2D::new(CANVAS_WIDTH / 2.0 - 120.0, CANVAS_HEIGHT * 0.40),
   )
+  add_text_entity(
+    Text::new("Pause Space to drop", font="30px ThaleahFat", color="Gray"),
+    Vec2D::new(CANVAS_WIDTH / 2.0 - 120.0, CANVAS_HEIGHT * 0.50),
+  )
+  add_text_entity(
+    Text::new("Click the cats!!!", font="20px ThaleahFat", color="White"),
+    Vec2D::new(CANVAS_WIDTH / 2.0 + 50.0, CANVAS_HEIGHT * 0.53),
+  )
 }
 
 ///|
