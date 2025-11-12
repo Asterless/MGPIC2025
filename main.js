@@ -6203,8 +6203,8 @@ function Asterless$MGPIC2025$main$$cat_move(move_state) {
         const _p$4 = _p$3;
         const _p$5 = _p$4;
         const _p$6 = _p$5.key;
-        _p$5.value;
-        moonbitlang$core$builtin$$Map$at$1$(Milky2018$selene$velocity$$velocities, _p$6).x = Asterless$MGPIC2025$main$$SigNum$signum$58$(move_state) * 4;
+        const _p$7 = _p$5.value;
+        moonbitlang$core$builtin$$Map$at$1$(Milky2018$selene$velocity$$velocities, _p$6).x = Asterless$MGPIC2025$main$$SigNum$signum$58$(move_state) * 4 / (_p$7.level + 0);
       }
       _tmp = _p$2 + 1 | 0;
       continue;
