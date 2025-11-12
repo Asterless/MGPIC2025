@@ -67,9 +67,9 @@ fn Cat::merge(self : Cat, other : Cat) -> Unit {
       position_mid
     }
   }
-  let p_mid = Vec2D::{ x: cat_x, y: 17 }
-  let merged = Cat::new(p_mid, self.level + 1)
-  global_velocity[merged.entity].y = 1000
+  let cat_y = (position_cat_1.y + position_cat_2.y) / 2.0 - 32.0
+  let position_merged = Vec2D::{ x: cat_x, y: cat_y }
+  let _ = Cat::new(position_merged, self.level + 1)
   cats_by_entity.remove(self.entity)
   cats_by_entity.remove(other.entity)
   Entity::destroy(self.entity)
@@ -116,22 +116,24 @@ fn Cat::get_sound_path_by_level(level : Int) -> String {
 ///|
 fn Cat::get_collision_layer(self : Cat) -> CollisionLayer {
   let level = self.level
-  if level > 0 && level <= cat_collision_layers.length() {
-    cat_collision_layers[level - 1]
-  } else {
-    cat_collision_layers[0]
+  match level {
+    1..<10 => cat_collision_layers[level - 1]
+    _ => cat_collision_layers[0]
   }
 }
 
 ///|
 fn Cat::get_collision_mask_layers(self : Cat) -> Array[CollisionLayer] {
-  let layers = Array::new()
-  layers.push(terrain_collision_layer)
-  for i = 0; i < cat_collision_layers.length(); i = i + 1 {
-    // Corrected logic: Add all layers EXCEPT the current cat's own level.
-    if i != self.level - 1 {
-      layers.push(cat_collision_layers[i])
-    }
-  }
+  // let layers = Array::new()
+  // layers.push(terrain_collision_layer)
+  // for i = 0; i < cat_collision_layers.length(); i = i + 1 {
+  //   // Corrected logic: Add all layers EXCEPT the current cat's own level.
+  //   if i != self.level - 1 {
+  //     layers.push(cat_collision_layers[i])
+  //   }
+  // }
+  // layers
+  let layers = [terrain_collision_layer]
+  layers.push_iter(cat_collision_layers.iter())
   layers
 }

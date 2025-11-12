@@ -2,7 +2,11 @@
 package "Asterless/MGPIC2025/main"
 
 import(
+  "Milky2018/selene/collision"
+  "Milky2018/selene/position"
+  "Milky2018/selene/sprite"
   "Milky2018/selene/system"
+  "Milky2018/selene/velocity"
 )
 
 // Values
@@ -17,6 +21,8 @@ type GameState
 
 type MoveState
 
+type SideEffect
+
 type StateMonad[S, W, A]
 
 type Trigger
@@ -25,6 +31,8 @@ type Trigger
 
 // Traits
 trait Monoid
+
+trait Prop
 
 trait SigNum
 
