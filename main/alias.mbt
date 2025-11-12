@@ -20,6 +20,9 @@ using @velocity {type Velocity, velocities as global_velocity}
 using @position {type Position, positions as global_position}
 
 ///|
+using @acceleration {type Acceleration, accelerations as global_acceleration}
+
+///|
 using @sprite {
   type Sprite,
   type Text,
