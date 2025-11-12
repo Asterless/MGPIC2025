@@ -25,7 +25,7 @@ using @sprite {
   type Text,
   type Picture,
   type Animation,
-  sprites as global_sprites,
+  sprites as global_sprite,
 }
 
 ///|
@@ -35,8 +35,8 @@ using @collision {
   type CollisionMask,
   type CollisionShape,
   type Area,
-  collides as global_collides,
-  areas as global_areas,
+  collides as global_collide,
+  areas as global_area,
 }
 
 ///|

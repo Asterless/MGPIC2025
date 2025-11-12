@@ -3,7 +3,9 @@ fn game_start(_backend : &Backend) -> Unit {
   add_pointer()
   for x = 0.0; x < CANVAS_WIDTH; x = x + 16.0 {
     add_bottom(Vec2D::new(x, CANVAS_HEIGHT - 16.0))
+    add_top(Vec2D::new(x, 0.0))
   }
+
   for x = 0.0; x < CANVAS_HEIGHT; x = x + 16.0 * 3.0 {
     add_side_walls(Vec2D::new(0, x))
     add_side_walls(Vec2D::new(CANVAS_WIDTH - 16.0, x))
@@ -17,9 +19,31 @@ fn add_pointer() -> Unit {
   global_position[ptr_entity] = Vec2D::new(CANVAS_WIDTH / 2.0, 80.0)
   let velocity = Vec2D::zero()
   global_velocity[ptr_entity] = velocity
-  global_sprites[ptr_entity] = game_state.pointer_sprite
+  global_sprite[ptr_entity] = game_state.pointer_sprite
 }
 
+fn add_top(pos : Vec2D) -> Unit {
+  let entity = Entity::new()
+  global_position[entity] = pos
+  let animation = Animation::new(
+    "./assets/Terrain/Terrain (16x16).png",
+    max_frame=1,
+    height=16,
+    width=16,
+    offset=Vec2D::new(16.0 * 13, 0.0),
+  )
+  let sprite = Sprite::new_animation(animation, ZINDEX_FOR_TERRAIN)
+  global_sprite[entity] = sprite
+  let collide : Collide = Collide::{
+    shape: CollisionShape::Rect(
+      size=Vec2D::new(16.0, 16.0),
+      offset=Vec2D::zero(),
+    ),
+    layer: terrain_collision_layer,
+    mask: CollisionMask::empty(),
+  }
+  global_collide[entity] = collide
+}
 ///|
 fn add_bottom(pos : Vec2D) -> Unit {
   let entity = Entity::new()
@@ -32,7 +56,7 @@ fn add_bottom(pos : Vec2D) -> Unit {
     offset=Vec2D::new(16.0 * 7, 0.0),
   )
   let sprite = Sprite::new_animation(animation, ZINDEX_FOR_TERRAIN)
-  global_sprites[entity] = sprite
+  global_sprite[entity] = sprite
   let collide : Collide = Collide::{
     shape: CollisionShape::Rect(
       size=Vec2D::new(16.0, 16.0),
@@ -41,7 +65,7 @@ fn add_bottom(pos : Vec2D) -> Unit {
     layer: terrain_collision_layer,
     mask: CollisionMask::empty(),
   }
-  global_collides[entity] = collide
+  global_collide[entity] = collide
 }
 
 ///|
@@ -64,8 +88,8 @@ fn add_side_walls(pos : Vec2D) -> Unit {
     layer: terrain_collision_layer,
     mask: CollisionMask::new([pointer_collision_layer]),
   }
-  global_sprites[wall] = Sprite::new_animation(animation, ZINDEX_FOR_WALLS)
-  global_collides[wall] = left_collide
+  global_sprite[wall] = Sprite::new_animation(animation, ZINDEX_FOR_WALLS)
+  global_collide[wall] = left_collide
 }
 
 ///|
@@ -77,7 +101,7 @@ fn add_background() -> Unit {
     repeat=true,
   )
   let sprite = Sprite::new_picture(picture, ZINDEX_FOR_BACKGROUND)
-  global_sprites[entity] = sprite
+  global_sprite[entity] = sprite
   global_position[entity] = Vec2D::zero()
 }
 
@@ -104,5 +128,5 @@ fn add_text_entity(text : Text, position : Vec2D) -> Unit {
   let entity = Entity::new()
   global_position[entity] = position
   let sprite = Sprite::new_text(text, ZINDEX_FOR_TEXT)
-  global_sprites[entity] = sprite
+  global_sprite[entity] = sprite
 }
