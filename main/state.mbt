@@ -30,9 +30,6 @@ let game_state : GameState = {
 let cats_by_entity : HashMap[Entity, Cat] = HashMap::new()
 
 ///|
-let teleport_queue : HashSet[Cat] = HashSet::new()
-
-///|
 let pointer_collision_layer : CollisionLayer = CollisionLayer::new()
 
 ///|
