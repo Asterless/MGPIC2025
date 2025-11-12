@@ -96,6 +96,10 @@ fn cat_teleport_system(_ : &Backend) -> Unit {
       )
       Prop::set_position(cat.entity, position)
       Prop::set_velocity(cat.entity, @velocity.Velocity(Vec2D::zero()))
+      Prop::set_acceleration(
+        cat.entity,
+        @acceleration.Acceleration(Vec2D::zero()),
+      )
       space -= cat.get_size() + 1.0
     } else {
       break
