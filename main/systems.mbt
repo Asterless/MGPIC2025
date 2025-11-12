@@ -80,6 +80,7 @@ fn play_sound_system(backend : &Backend) -> Unit {
 ///|
 fn cat_teleport_system(_ : &Backend) -> Unit {
   cats_by_entity.each((entity, cat) => {
+    Prop::set_acceleration(entity, @acceleration.Acceleration(Vec2D::zero()))
     let position = Prop::get_position(entity).unwrap()
     if position.x > CANVAS_WIDTH - 16.0 - cat.get_size() ||
       position.x < 16.0 ||
@@ -90,9 +91,13 @@ fn cat_teleport_system(_ : &Backend) -> Unit {
   })
   let mut space = CANVAS_WIDTH - 34.0
   for cat in teleport_queue {
+    if !cats_by_entity.contains(cat.entity) {
+      teleport_queue.remove(cat)
+      continue
+    }
     if space - cat.get_size() - 1.0 > 0.0 {
       let position = @position.Position(
-        Vec2D::new(CANVAS_WIDTH - (space + 17.0), 17.0),
+        Vec2D::new(CANVAS_WIDTH - (space + 17.0), 24.0),
       )
       Prop::set_position(cat.entity, position)
       Prop::set_velocity(cat.entity, @velocity.Velocity(Vec2D::zero()))
@@ -100,6 +105,7 @@ fn cat_teleport_system(_ : &Backend) -> Unit {
         cat.entity,
         @acceleration.Acceleration(Vec2D::zero()),
       )
+      teleport_queue.remove(cat)
       space -= cat.get_size() + 1.0
     } else {
       break
