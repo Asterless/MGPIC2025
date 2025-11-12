@@ -2,6 +2,8 @@
 
 这是一个基于流行的“合成大西瓜”玩法的简单合并游戏，使用 [MoonBit](https://www.moonbitlang.com/) 语言和 [Selene](https://github.com/moonbitlang/selene) 游戏引擎构建。
 
+依赖 GitHub Pages 的在线游戏链接：[合成猫Meme](https://asterless.github.io/MGPIC2025/)
+
 ## 游戏玩法
 
 - 从屏幕顶部落下不同等级的猫Meme。
