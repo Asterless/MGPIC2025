@@ -2,7 +2,7 @@
 struct Cat {
   entity : Entity
   level : Int
-}
+} derive(Eq, Hash)
 
 ///|
 fn Cat::new(position : Vec2D, level : Int) -> Cat {
@@ -83,7 +83,7 @@ fn Cat::get_size(self : Cat) -> Double {
 
 ///|
 fn Cat::get_size_by_level(level : Int) -> Double {
-  (level - 1).to_double() * 16.0 + 32.0
+  ((level - 1) * 16 + 32).to_double()
 }
 
 ///|

@@ -16,6 +16,8 @@ let ptr_entity : @system.Entity
 
 // Types and methods
 type Cat
+impl Eq for Cat
+impl Hash for Cat
 
 type GameState
 
