@@ -5,8 +5,8 @@ fn input_system(backend : &Backend) -> Unit {
   bind_key(KeyD, KeepPressed, () => ptr_move(Right))
   bind_keys([KeyA, KeyD], NotPressed, () => ptr_move(Stop))
   // Move Cats
-  bind_key(KeyQ, Pressed, () => cat_move(Left))
-  bind_key(KeyE, Pressed, () => cat_move(Right))
+  bind_key(KeyQ, KeepPressed, () => cat_move(Left))
+  bind_key(KeyE, KeepPressed, () => cat_move(Right))
   // Play Music and Drop Cats
   bind_key(Space, Pressed, () => cat_drop(backend))
   global_sprite[ptr_entity] = game_state.pointer_sprite
