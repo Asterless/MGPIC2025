@@ -36,6 +36,9 @@ let pointer_collision_layer : CollisionLayer = CollisionLayer::new()
 let terrain_collision_layer : CollisionLayer = CollisionLayer::new()
 
 ///|
+let teleport_queue : HashSet[Cat] = HashSet::new()
+
+///|
 let cat_collision_layers : Array[CollisionLayer] = [
   CollisionLayer::new(), // level 1
   CollisionLayer::new(), // level 2
