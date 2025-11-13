@@ -1,6 +1,6 @@
 # Asterless / MGPIC2025（合成猫 Meme）
 
-本项目是一款基于经典“合成大西瓜”玩法的轻量级合并游戏，由 [MoonBit](https://www.moonbitlang.com/) 语言与 [Selene](https://github.com/moonbitlang/selene) 游戏引擎构建。
+本项目是一款基于经典“合成大西瓜”玩法的轻量级合并游戏，由 [MoonBit](https://www.moonbitlang.com/) 语言与 [Selene](https://github.com/moonbit-community/selene) 游戏引擎构建。
 
 在线试玩（GitHub Pages）：[合成猫 Meme](https://asterless.github.io/MGPIC2025/)
 
