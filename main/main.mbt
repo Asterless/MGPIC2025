@@ -9,6 +9,7 @@ fn main {
   .add_system(input_system)
   .add_system(force_system)
   .add_system(merge_system)
+  .add_system(cat_teleport_system)
   .add_system(play_sound_system)
   .add_initializer(game_start)
   .run()
